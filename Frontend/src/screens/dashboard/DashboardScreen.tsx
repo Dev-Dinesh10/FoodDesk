@@ -1,0 +1,220 @@
+import React from 'react';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { COLORS } from '../../constants/colors';
+import { TYPOGRAPHY, FONT_WEIGHT } from '../../constants/typography';
+import { SPACING } from '../../constants/spacing';
+import MetricCard from '../../components/dashboard/MetricCard';
+import QuickActionButton from '../../components/dashboard/QuickActionButton';
+import ActivityItem from '../../components/dashboard/ActivityItem';
+
+const DashboardScreen = () => {
+  const isOffline = false;
+  const hasOrders = true;
+  const showSlaAlert = true;
+
+  const recentActivities = [
+    { action: 'Order #A-045 accepted', timestamp: '10:12 AM' },
+    { action: 'Order #A-046 moved to preparing', timestamp: '10:15 AM' },
+    { action: 'Item marked sold out: Lemon Rice', timestamp: '10:18 AM' },
+    { action: 'Order #A-044 collected', timestamp: '10:20 AM' },
+  ];
+
+  return (
+    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+      <View style={styles.topInfoBar}>
+        <View>
+          <Text style={styles.vendorName}>FreshBowl Kitchen</Text>
+          <Text style={styles.vendorMeta}>Counter 2 · {new Date().toDateString()}</Text>
+        </View>
+        <View style={styles.statusWrap}>
+          <View style={[styles.statusDot, isOffline ? styles.offlineDot : styles.onlineDot]} />
+          <Text style={styles.statusText}>{isOffline ? 'Offline' : 'Online'}</Text>
+          <Pressable>
+            <Text style={styles.logoutText}>Logout</Text>
+          </Pressable>
+        </View>
+      </View>
+
+      {isOffline ? (
+        <View style={styles.offlineBanner}>
+          <Text style={styles.offlineBannerText}>Working offline - showing cached data</Text>
+        </View>
+      ) : null}
+
+      {showSlaAlert ? (
+        <View style={styles.slaBanner}>
+          <Text style={styles.slaBannerText}>
+            SLA alert: Order #A-047 prep time exceeded by 4 min
+          </Text>
+        </View>
+      ) : null}
+
+      <View style={styles.statsGrid}>
+        <MetricCard 
+          label="Today's Pre-Orders" 
+          value="452 confirmed" 
+          iconName="assignment" 
+        />
+        <MetricCard 
+          label="Live Orders Pending" 
+          value="12 in queue" 
+          iconName="timer" 
+        />
+        <MetricCard 
+          label="Sold Out Items" 
+          value="2 flagged" 
+          iconName="block" 
+          iconColor={COLORS.error}
+        />
+        <MetricCard 
+          label="Today's Revenue" 
+          value="₹67,800" 
+          iconName="payments" 
+          iconColor={COLORS.success}
+        />
+      </View>
+
+      <Text style={styles.sectionTitle}>Quick Actions</Text>
+      <View style={styles.quickActionsRow}>
+        <QuickActionButton label="View Pre-Orders" onPress={() => {}} />
+        <View style={styles.actionGap} />
+        <QuickActionButton label="Open Live Counter" onPress={() => {}} />
+        <View style={styles.actionGap} />
+        <QuickActionButton label="Manage Menu" onPress={() => {}} />
+      </View>
+
+      <Text style={styles.sectionTitle}>Recent Activity</Text>
+      <View style={styles.activityCard}>
+        {hasOrders ? (
+          recentActivities.map((activity, index) => (
+            <ActivityItem
+              key={`${activity.action}-${index}`}
+              action={activity.action}
+              timestamp={activity.timestamp}
+            />
+          ))
+        ) : (
+          <Text style={styles.emptyText}>
+            No pre-orders for today. Live kitchen opens at 11:30 AM.
+          </Text>
+        )}
+      </View>
+    </ScrollView>
+  );
+};
+
+export default DashboardScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.background,
+  },
+  content: {
+    padding: SPACING.lg,
+    paddingBottom: SPACING.max,
+  },
+  topInfoBar: {
+    backgroundColor: COLORS.surface,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    borderRadius: 12,
+    padding: SPACING.md,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  vendorName: {
+    fontSize: TYPOGRAPHY.lg,
+    color: COLORS.textPrimary,
+    fontWeight: FONT_WEIGHT.bold,
+  },
+  vendorMeta: {
+    marginTop: SPACING.xs,
+    fontSize: TYPOGRAPHY.sm,
+    color: COLORS.textSecondary,
+  },
+  statusWrap: {
+    alignItems: 'flex-end',
+  },
+  statusDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginBottom: SPACING.xs,
+  },
+  onlineDot: {
+    backgroundColor: COLORS.success,
+  },
+  offlineDot: {
+    backgroundColor: COLORS.error,
+  },
+  statusText: {
+    fontSize: TYPOGRAPHY.xs,
+    color: COLORS.textSecondary,
+    marginBottom: SPACING.xs,
+  },
+  logoutText: {
+    color: COLORS.primary,
+    fontSize: TYPOGRAPHY.sm,
+    fontWeight: FONT_WEIGHT.semibold,
+  },
+  offlineBanner: {
+    marginTop: SPACING.md,
+    backgroundColor: COLORS.error,
+    borderRadius: 10,
+    padding: SPACING.sm,
+  },
+  offlineBannerText: {
+    color: COLORS.white,
+    fontSize: TYPOGRAPHY.sm,
+    fontWeight: FONT_WEIGHT.medium,
+  },
+  slaBanner: {
+    marginTop: SPACING.md,
+    backgroundColor: COLORS.lockedBannerBg,
+    borderWidth: 1,
+    borderColor: COLORS.lockedBannerBorder,
+    borderRadius: 10,
+    padding: SPACING.sm,
+  },
+  slaBannerText: {
+    color: COLORS.lockedBannerText,
+    fontSize: TYPOGRAPHY.sm,
+    fontWeight: FONT_WEIGHT.semibold,
+  },
+  statsGrid: {
+    marginTop: SPACING.lg,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  sectionTitle: {
+    marginTop: SPACING.md,
+    marginBottom: SPACING.sm,
+    fontSize: TYPOGRAPHY.md,
+    color: COLORS.textPrimary,
+    fontWeight: FONT_WEIGHT.bold,
+  },
+  quickActionsRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: SPACING.sm,
+  },
+  actionGap: {
+    width: SPACING.xs,
+  },
+  activityCard: {
+    backgroundColor: COLORS.surface,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    paddingHorizontal: SPACING.md,
+  },
+  emptyText: {
+    paddingVertical: SPACING.md,
+    fontSize: TYPOGRAPHY.sm,
+    color: COLORS.textSecondary,
+    fontWeight: FONT_WEIGHT.medium,
+  },
+});
