@@ -136,9 +136,9 @@ const SettlementsScreen = () => {
               </View>
               <View style={styles.historyBottom}>
                 <Text style={styles.historyAmount}>₹{item.amount.toLocaleString()}</Text>
-                <TouchableOpacity style={styles.downloadBtn}>
-                  <MaterialIcons name="file-download" size={16} color={COLORS.primary} />
-                  <Text style={styles.downloadText}>Statement</Text>
+                <TouchableOpacity style={styles.statementButton}>
+                  <MaterialIcons name="receipt" size={14} color={COLORS.primary} />
+                  <Text style={styles.statementText}>Statement</Text>
                 </TouchableOpacity>
               </View>
               {item.status === 'FAILED' && (
@@ -352,12 +352,18 @@ const styles = StyleSheet.create({
     fontWeight: FONT_WEIGHT.bold,
     color: COLORS.textPrimary,
   },
-  downloadBtn: {
+  statementButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    gap: 6,
+    backgroundColor: '#FFF5ED',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#FFEDD5',
   },
-  downloadText: {
+  statementText: {
     fontSize: 12,
     color: COLORS.primary,
     fontWeight: FONT_WEIGHT.bold,

@@ -14,6 +14,8 @@ interface LayoutProps {
   activeBottomTabKey?: string;
   onSideTabPress?: (key: string) => void;
   onBottomTabPress?: (key: string) => void;
+  onLogout?: () => void;
+  isOnline?: boolean;
 }
 
 const defaultSideTabs: SideTabItem[] = [
@@ -40,6 +42,8 @@ const Layout: React.FC<LayoutProps> = ({
   activeBottomTabKey = 'dashboard',
   onSideTabPress,
   onBottomTabPress,
+  onLogout,
+  isOnline = true,
 }) => {
   const [isSideTabOpen, setIsSideTabOpen] = useState(false);
   const insets = useSafeAreaInsets();
@@ -49,7 +53,12 @@ const Layout: React.FC<LayoutProps> = ({
   return (
     <View style={styles.root}>
       <View style={{ paddingTop: insets.top }}>
-        <Header title={title} onMenuPress={() => setIsSideTabOpen(true)} />
+        <Header 
+          title={title} 
+          onMenuPress={() => setIsSideTabOpen(true)} 
+          onLogout={onLogout}
+          isOnline={isOnline}
+        />
       </View>
 
       <View style={styles.content}>{children}</View>

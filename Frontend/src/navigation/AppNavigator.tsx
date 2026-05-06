@@ -52,6 +52,7 @@ function withAppLayout(
       <Layout
         title={title}
         activeBottomTabKey={routeKey}
+        onLogout={onLogout}
         onBottomTabPress={(key) => {
           const targetRoute = bottomTabRouteMap[key];
           if (targetRoute) {

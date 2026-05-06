@@ -1,5 +1,8 @@
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { AppStackParamList } from '../../navigation/AppNavigator';
 import { COLORS } from '../../constants/colors';
 import { TYPOGRAPHY, FONT_WEIGHT } from '../../constants/typography';
 import { SPACING } from '../../constants/spacing';
@@ -8,6 +11,7 @@ import QuickActionButton from '../../components/dashboard/QuickActionButton';
 import ActivityItem from '../../components/dashboard/ActivityItem';
 
 const DashboardScreen = () => {
+  const navigation = useNavigation<NativeStackNavigationProp<AppStackParamList>>();
   const isOffline = false;
   const hasOrders = true;
   const showSlaAlert = true;
@@ -26,13 +30,6 @@ const DashboardScreen = () => {
           <Text style={styles.vendorName}>FreshBowl Kitchen</Text>
           <Text style={styles.vendorMeta}>Counter 2 · {new Date().toDateString()}</Text>
         </View>
-        <View style={styles.statusWrap}>
-          <View style={[styles.statusDot, isOffline ? styles.offlineDot : styles.onlineDot]} />
-          <Text style={styles.statusText}>{isOffline ? 'Offline' : 'Online'}</Text>
-          <Pressable>
-            <Text style={styles.logoutText}>Logout</Text>
-          </Pressable>
-        </View>
       </View>
 
       {isOffline ? (
@@ -50,37 +47,46 @@ const DashboardScreen = () => {
       ) : null}
 
       <View style={styles.statsGrid}>
-        <MetricCard 
-          label="Today's Pre-Orders" 
-          value="452 confirmed" 
-          iconName="assignment" 
+        <MetricCard
+          label="Today's Pre-Orders"
+          value="452 confirmed"
+          iconName="assignment"
         />
-        <MetricCard 
-          label="Live Orders Pending" 
-          value="12 in queue" 
-          iconName="timer" 
+        <MetricCard
+          label="Live Orders Pending"
+          value="12 in queue"
+          iconName="timer"
         />
-        <MetricCard 
-          label="Sold Out Items" 
-          value="2 flagged" 
-          iconName="block" 
+        <MetricCard
+          label="Sold Out Items"
+          value="2 flagged"
+          iconName="block"
           iconColor={COLORS.error}
         />
-        <MetricCard 
-          label="Today's Revenue" 
-          value="₹67,800" 
-          iconName="payments" 
+        <MetricCard
+          label="Today's Revenue"
+          value="₹67,800"
+          iconName="payments"
           iconColor={COLORS.success}
         />
       </View>
 
       <Text style={styles.sectionTitle}>Quick Actions</Text>
       <View style={styles.quickActionsRow}>
-        <QuickActionButton label="View Pre-Orders" onPress={() => {}} />
+        <QuickActionButton
+          label="View Pre-Orders"
+          onPress={() => navigation.navigate('PreOrders')}
+        />
         <View style={styles.actionGap} />
-        <QuickActionButton label="Open Live Counter" onPress={() => {}} />
+        <QuickActionButton
+          label="Open Live Counter"
+          onPress={() => navigation.navigate('LiveOrders')}
+        />
         <View style={styles.actionGap} />
-        <QuickActionButton label="Manage Menu" onPress={() => {}} />
+        <QuickActionButton
+          label="Manage Menu"
+          onPress={() => navigation.navigate('Menu')}
+        />
       </View>
 
       <Text style={styles.sectionTitle}>Recent Activity</Text>
@@ -130,34 +136,10 @@ const styles = StyleSheet.create({
     fontWeight: FONT_WEIGHT.bold,
   },
   vendorMeta: {
-    marginTop: SPACING.xs,
-    fontSize: TYPOGRAPHY.sm,
+    marginTop: 4,
+    fontSize: 12,
     color: COLORS.textSecondary,
-  },
-  statusWrap: {
-    alignItems: 'flex-end',
-  },
-  statusDot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    marginBottom: SPACING.xs,
-  },
-  onlineDot: {
-    backgroundColor: COLORS.success,
-  },
-  offlineDot: {
-    backgroundColor: COLORS.error,
-  },
-  statusText: {
-    fontSize: TYPOGRAPHY.xs,
-    color: COLORS.textSecondary,
-    marginBottom: SPACING.xs,
-  },
-  logoutText: {
-    color: COLORS.primary,
-    fontSize: TYPOGRAPHY.sm,
-    fontWeight: FONT_WEIGHT.semibold,
+    fontWeight: FONT_WEIGHT.medium,
   },
   offlineBanner: {
     marginTop: SPACING.md,
