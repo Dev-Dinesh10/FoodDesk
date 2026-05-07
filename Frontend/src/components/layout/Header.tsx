@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, Text, View, TouchableOpacity } from 'react-nativ
 import { MaterialIcons } from '@expo/vector-icons';
 import { COLORS } from '../../constants/colors';
 import { SPACING } from '../../constants/spacing';
-import { TYPOGRAPHY, FONT_WEIGHT } from '../../constants/typography';
+
 
 interface HeaderProps {
   title: string;

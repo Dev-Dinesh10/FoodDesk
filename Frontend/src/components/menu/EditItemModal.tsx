@@ -15,7 +15,7 @@ import {
 import { MaterialIcons } from '@expo/vector-icons';
 import { COLORS } from '../../constants/colors';
 import { SPACING } from '../../constants/spacing';
-import { TYPOGRAPHY, FONT_WEIGHT } from '../../constants/typography';
+import { FONT_WEIGHT } from '../../constants/typography';
 
 interface EditItemModalProps {
   visible: boolean;

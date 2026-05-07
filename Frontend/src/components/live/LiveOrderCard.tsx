@@ -69,15 +69,15 @@ const LiveOrderCard: React.FC<LiveOrderCardProps> = ({
 
       {/* SLA Progress Bar */}
       <View style={styles.slaContainer}>
+        <Text style={[styles.slaLabel, { color: getSlaColor() }]}>
+          {isBreached ? 'SLA BREACHED' : `${Math.round(slaProgress * 100)}% Time`}
+        </Text>
         <View style={styles.slaBackground}>
           <View style={[
             styles.slaFill,
             { width: `${Math.min(slaProgress * 100, 100)}%`, backgroundColor: getSlaColor() }
           ]} />
         </View>
-        <Text style={[styles.slaLabel, { color: getSlaColor() }]}>
-          {isBreached ? 'SLA BREACHED' : `${Math.round(slaProgress * 100)}% Time`}
-        </Text>
       </View>
 
       {/* Actions */}
@@ -170,11 +170,10 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.md,
   },
   slaBackground: {
-    height: 4,
+    height: 6,
     backgroundColor: '#E2E8F0',
-    borderRadius: 2,
+    borderRadius: 3,
     overflow: 'hidden',
-    marginBottom: 4,
   },
   slaFill: {
     height: '100%',
@@ -183,6 +182,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontWeight: FONT_WEIGHT.bold,
     textAlign: 'right',
+    marginBottom: 4,
   },
   actions: {
     flexDirection: 'row',
