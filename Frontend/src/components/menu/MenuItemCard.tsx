@@ -1,12 +1,12 @@
 import React from 'react';
-import { 
-  StyleSheet, 
-  Text, 
-  View, 
-  Image, 
-  TouchableOpacity, 
-  Switch, 
-  Platform 
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Switch,
+  Platform
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { COLORS } from '../../constants/colors';
@@ -15,48 +15,77 @@ import { TYPOGRAPHY, FONT_WEIGHT } from '../../constants/typography';
 
 interface MenuItemCardProps {
   name: string;
-  category: string;
   price: number;
   image?: any;
   isAvailable: boolean;
   isSoldOut: boolean;
-  remainingQty: number;
   orderedToday: number;
+  isVegetarian: boolean;
   onToggleAvailability: () => void;
   onMarkSoldOut: () => void;
   onEdit: () => void;
 }
 
+const TOTAL_STOCK = 200;
+
+const getAvailabilityColor = (qty: number) => {
+  if (qty >= 150) return '#22C55E'; // Green
+  if (qty >= 100) return '#F59E0B'; // Amber
+  if (qty >= 50) return '#EAB308';  // Yellow
+  return '#EF4444'; // Red
+};
+
 const MenuItemCard: React.FC<MenuItemCardProps> = ({
   name,
-  category,
   price,
   image,
   isAvailable,
   isSoldOut,
-  remainingQty,
   orderedToday,
+  isVegetarian,
   onToggleAvailability,
   onMarkSoldOut,
   onEdit,
 }) => {
+  const remainingQty = Math.max(TOTAL_STOCK - orderedToday, 0);
+
   return (
     <View style={[styles.card, !isAvailable && styles.greyedOut]}>
-      {/* Thumbnail Area */}
-      <View style={styles.thumbnailContainer}>
-        {image ? (
-          <Image source={image} style={styles.thumbnail} />
-        ) : (
-          <View style={styles.placeholder}>
-            <MaterialIcons name="add-a-photo" size={24} color={COLORS.textDisabled} />
-            <Text style={styles.placeholderText}>Add photo</Text>
-          </View>
-        )}
-        {isSoldOut && (
-          <View style={styles.soldOutBadge}>
-            <Text style={styles.soldOutText}>SOLD OUT</Text>
-          </View>
-        )}
+      {/* Left Column: Image and Sold Out Action */}
+      <View style={styles.leftColumn}>
+        <View style={styles.thumbnailContainer}>
+          {image ? (
+            <Image source={image} style={styles.thumbnail} />
+          ) : (
+            <View style={styles.placeholder}>
+              <MaterialIcons name="add-a-photo" size={24} color={COLORS.textDisabled} />
+              <Text style={styles.placeholderText}>Add photo</Text>
+            </View>
+          )}
+          {isSoldOut && (
+            <View style={styles.soldOutBadge}>
+              <Text style={styles.soldOutText}>SOLD OUT</Text>
+            </View>
+          )}
+        </View>
+
+        <View style={styles.imageActions}>
+          <TouchableOpacity
+            style={styles.editBtnInline}
+            onPress={onEdit}
+          >
+            <MaterialIcons name="edit" size={16} color={COLORS.textSecondary} />
+          </TouchableOpacity>
+          
+          {!isSoldOut && (
+            <TouchableOpacity
+              style={styles.soldOutBtnInline}
+              onPress={onMarkSoldOut}
+            >
+              <Text style={styles.soldOutBtnText}>Sold Out</Text>
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
 
       {/* Info Area */}
@@ -64,48 +93,56 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
         <View style={styles.headerRow}>
           <View>
             <Text style={styles.name}>{name}</Text>
-            <Text style={styles.category}>{category}</Text>
+            <Text style={styles.price}>₹{price}</Text>
           </View>
-          <TouchableOpacity style={styles.editBtn} onPress={onEdit}>
-            <Text style={styles.editBtnText}>Edit</Text>
-          </TouchableOpacity>
-        </View>
-
-        <Text style={styles.price}>₹{price}</Text>
-
-        <View style={styles.statsRow}>
-          <View style={styles.stat}>
-            <Text style={styles.statLabel}>Remaining</Text>
-            <Text style={[styles.statValue, remainingQty < 10 && { color: COLORS.error }]}>
-              {remainingQty}
-            </Text>
-          </View>
-          <View style={styles.statDivider} />
-          <View style={styles.stat}>
-            <Text style={styles.statLabel}>Ordered</Text>
-            <Text style={styles.statValue}>{orderedToday} today</Text>
-          </View>
-        </View>
-
-        <View style={styles.actionsRow}>
-          {!isSoldOut && (
-            <TouchableOpacity 
-              style={styles.soldOutBtn} 
-              onPress={onMarkSoldOut}
-            >
-              <Text style={styles.soldOutBtnText}>Mark Sold Out</Text>
-            </TouchableOpacity>
-          )}
-          <View style={{ flex: 1 }} />
-          <View style={styles.toggleWrapper}>
-            <Text style={styles.toggleLabel}>{isAvailable ? 'Active' : 'Hidden'}</Text>
+          <View style={styles.headerActions}>
             <Switch
               value={isAvailable}
               onValueChange={onToggleAvailability}
               trackColor={{ false: '#CBD5E1', true: '#10B981' }}
               thumbColor={Platform.OS === 'ios' ? undefined : COLORS.white}
-              style={{ transform: [{ scaleX: 0.85 }, { scaleY: 0.85 }] }} // Made it slightly smaller
+              style={{ transform: [{ scaleX: 0.65 }, { scaleY: 0.65 }] }}
             />
+            <View style={styles.vegIndicatorContainer}>
+              <View style={[styles.vegIndicatorBox, { borderColor: isVegetarian ? '#22C55E' : '#EF4444' }]}>
+                <View style={[styles.vegIndicatorDot, { backgroundColor: isVegetarian ? '#22C55E' : '#EF4444' }]} />
+              </View>
+            </View>
+          </View>
+        </View>
+
+
+
+        <View style={styles.availabilityContainer}>
+          <View style={styles.availabilityHeader}>
+            <View>
+              <Text style={styles.availabilityLabel}>Remaining</Text>
+              <Text style={[styles.availabilityValue, { color: getAvailabilityColor(remainingQty) }]}>
+                {remainingQty} left
+              </Text>
+            </View>
+            <View style={styles.orderedInfo}>
+              <Text style={styles.orderedLabel}>Ordered Today</Text>
+              <Text style={styles.orderedValue}>{orderedToday}</Text>
+            </View>
+          </View>
+          <View style={styles.progressTrack}>
+            <View
+              style={[
+                styles.progressBar,
+                {
+                  width: `${Math.min((remainingQty / TOTAL_STOCK) * 100, 100)}%`,
+                  backgroundColor: getAvailabilityColor(remainingQty)
+                }
+              ]}
+            />
+          </View>
+          <View style={styles.levelsRow}>
+            <Text style={styles.levelText}>0</Text>
+            <Text style={styles.levelText}>50</Text>
+            <Text style={styles.levelText}>100</Text>
+            <Text style={styles.levelText}>150</Text>
+            <Text style={styles.levelText}>200</Text>
           </View>
         </View>
       </View>
@@ -129,7 +166,11 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   greyedOut: {
-    opacity: 0.6,
+    opacity: 0.4,
+  },
+  leftColumn: {
+    alignItems: 'center',
+    width: 100,
   },
   thumbnailContainer: {
     width: 100,
@@ -160,7 +201,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(239, 68, 68, 0.8)',
+    backgroundColor: 'rgba(239, 68, 68, 0.6)',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -169,6 +210,37 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '900',
     letterSpacing: 1,
+  },
+  imageActions: {
+    width: '100%',
+    flexDirection: 'row',
+    marginTop: 8,
+    gap: 4,
+    alignItems: 'center',
+  },
+  editBtnInline: {
+    width: 28,
+    height: 28,
+    borderRadius: 6,
+    borderWidth: 0.5,
+    borderColor: COLORS.border,
+    backgroundColor: '#F1F5F9',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  soldOutBtnInline: {
+    flex: 1,
+    paddingVertical: 8,
+    borderRadius: 6,
+    borderWidth: 0.5,
+    borderColor: COLORS.error,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  soldOutBtnText: {
+    fontSize: 9,
+    fontWeight: FONT_WEIGHT.bold,
+    color: COLORS.error,
   },
   infoContainer: {
     flex: 1,
@@ -179,89 +251,94 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'flex-start',
   },
+  headerActions: {
+    marginTop: -2,
+    alignItems: 'center',
+  },
+  vegIndicatorContainer: {
+    marginTop: 2,
+  },
+  vegIndicatorBox: {
+    width: 14,
+    height: 14,
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 2,
+  },
+  vegIndicatorDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+  },
   name: {
     fontSize: 16,
     fontWeight: FONT_WEIGHT.bold,
     color: COLORS.textPrimary,
   },
-  category: {
-    fontSize: 12,
-    color: COLORS.textSecondary,
-    marginTop: 2,
-  },
   price: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: FONT_WEIGHT.bold,
     color: COLORS.primary,
-    marginTop: 4,
+    marginTop: 2,
   },
-  editBtn: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 6,
-    backgroundColor: '#F1F5F9',
-    borderWidth: 1,
-    borderColor: COLORS.border,
-  },
-  editBtnText: {
-    fontSize: 12,
-    fontWeight: FONT_WEIGHT.bold,
-    color: COLORS.textPrimary,
-  },
-  statsRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  availabilityContainer: {
     marginTop: SPACING.sm,
     backgroundColor: '#F8FAFC',
-    padding: 8,
-    borderRadius: 8,
+    padding: 10,
+    borderRadius: 10,
   },
-  stat: {
-    flex: 1,
+  availabilityHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    marginBottom: 8,
   },
-  statLabel: {
+  availabilityLabel: {
+    fontSize: 10,
+    fontWeight: FONT_WEIGHT.medium,
+    color: COLORS.textSecondary,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  availabilityValue: {
+    fontSize: 13,
+    fontWeight: FONT_WEIGHT.bold,
+  },
+  orderedInfo: {
+    alignItems: 'flex-end',
+  },
+  orderedLabel: {
     fontSize: 10,
     color: COLORS.textSecondary,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
-  statValue: {
-    fontSize: 12,
+  orderedValue: {
+    fontSize: 13,
     fontWeight: FONT_WEIGHT.bold,
     color: COLORS.textPrimary,
   },
-  statDivider: {
-    width: 1,
-    height: 20,
-    backgroundColor: '#CBD5E1',
-    marginHorizontal: 8,
+  progressTrack: {
+    height: 6,
+    backgroundColor: '#E2E8F0',
+    borderRadius: 3,
+    overflow: 'hidden',
   },
-  actionsRow: {
+  progressBar: {
+    height: '100%',
+    borderRadius: 3,
+  },
+  levelsRow: {
     flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: SPACING.md,
+    justifyContent: 'space-between',
+    marginTop: 4,
+    paddingHorizontal: 2,
   },
-  soldOutBtn: {
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: 6,
-    borderWidth: 1,
-    borderColor: COLORS.error,
-  },
-  soldOutBtnText: {
-    fontSize: 11,
-    fontWeight: FONT_WEIGHT.bold,
-    color: COLORS.error,
-  },
-  toggleWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  toggleLabel: {
-    fontSize: 12,
+  levelText: {
+    fontSize: 8,
+    color: COLORS.textDisabled,
     fontWeight: FONT_WEIGHT.medium,
-    color: COLORS.textSecondary,
   },
 });
 

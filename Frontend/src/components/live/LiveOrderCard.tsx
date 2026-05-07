@@ -14,10 +14,8 @@ interface LiveOrderCardProps {
   slotTime: string;
   status: OrderStatus;
   slaProgress: number; // 0 to 1
-  onAccept?: () => void;
   onStartPrep?: () => void;
   onMarkReady?: () => void;
-  onReject?: () => void;
 }
 
 const STATUS_COLORS = {
@@ -33,10 +31,8 @@ const LiveOrderCard: React.FC<LiveOrderCardProps> = ({
   slotTime,
   status,
   slaProgress,
-  onAccept,
   onStartPrep,
   onMarkReady,
-  onReject,
 }) => {
   const getSlaColor = () => {
     if (slaProgress < 0.75) return COLORS.success;
@@ -87,14 +83,9 @@ const LiveOrderCard: React.FC<LiveOrderCardProps> = ({
       {/* Actions */}
       <View style={styles.actions}>
         {status === 'INCOMING' && (
-          <>
-            <TouchableOpacity style={[styles.actionBtn, styles.rejectBtn]} onPress={onReject}>
-              <Text style={styles.rejectBtnText}>Reject</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.actionBtn, styles.acceptBtn]} onPress={onAccept}>
-              <Text style={styles.acceptBtnText}>Accept</Text>
-            </TouchableOpacity>
-          </>
+          <TouchableOpacity style={[styles.actionBtn, styles.acceptBtn]} onPress={onStartPrep}>
+            <Text style={styles.acceptBtnText}>Start Preparation</Text>
+          </TouchableOpacity>
         )}
         {status === 'PREPARING' && (
           <TouchableOpacity style={[styles.actionBtn, styles.readyBtn]} onPress={onMarkReady}>
@@ -211,15 +202,6 @@ const styles = StyleSheet.create({
   },
   acceptBtnText: {
     color: COLORS.white,
-    fontWeight: FONT_WEIGHT.bold,
-    fontSize: 12,
-  },
-  rejectBtn: {
-    backgroundColor: '#F1F5F9',
-    flex: 1,
-  },
-  rejectBtnText: {
-    color: COLORS.textSecondary,
     fontWeight: FONT_WEIGHT.bold,
     fontSize: 12,
   },

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { 
-  StyleSheet, 
-  Text, 
-  View, 
-  ScrollView, 
-  TouchableOpacity, 
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
   Dimensions,
   SafeAreaView
 } from 'react-native';
@@ -54,7 +54,7 @@ const LiveOrdersScreen = () => {
 
   const renderColumn = (title: string, status: OrderStatus, icon: string, color: string) => {
     const colOrders = orders.filter(o => o.status === status);
-    
+
     return (
       <View style={styles.column}>
         <View style={[styles.columnHeader, { borderTopColor: color }]}>
@@ -67,8 +67,8 @@ const LiveOrdersScreen = () => {
           </View>
         </View>
 
-        <ScrollView 
-          style={styles.columnScroll} 
+        <ScrollView
+          style={styles.columnScroll}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.columnContent}
         >
@@ -82,9 +82,8 @@ const LiveOrdersScreen = () => {
                 slotTime={order.slotTime}
                 status={order.status}
                 slaProgress={order.slaProgress}
-                onAccept={() => updateStatus(order.id, 'PREPARING')}
+                onStartPrep={() => updateStatus(order.id, 'PREPARING')}
                 onMarkReady={() => updateStatus(order.id, 'READY')}
-                onReject={() => setOrders(prev => prev.filter(o => o.id !== order.id))}
               />
             ))
           ) : (
@@ -106,14 +105,14 @@ const LiveOrdersScreen = () => {
           <Text style={styles.title}>Live Orders</Text>
           <Text style={styles.subtitle}>Counter View • {orders.length} Active</Text>
         </View>
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.modeToggle}
           onPress={() => setViewMode(viewMode === 'KANBAN' ? 'BOARD' : 'KANBAN')}
         >
-          <MaterialIcons 
-            name={viewMode === 'KANBAN' ? 'fullscreen' : 'view-week'} 
-            size={24} 
-            color={COLORS.primary} 
+          <MaterialIcons
+            name={viewMode === 'KANBAN' ? 'fullscreen' : 'view-week'}
+            size={24}
+            color={COLORS.primary}
           />
         </TouchableOpacity>
       </View>
@@ -121,14 +120,14 @@ const LiveOrdersScreen = () => {
       {/* Batch Action Bar */}
       <View style={styles.actionBar}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.actionScroll}>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.batchBtn}
             onPress={() => batchAction('INCOMING', 'PREPARING')}
           >
             <MaterialIcons name="play-arrow" size={16} color={COLORS.textPrimary} />
             <Text style={styles.batchBtnText}>Mark all preparing</Text>
           </TouchableOpacity>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.batchBtn}
             onPress={() => batchAction('PREPARING', 'READY')}
           >
@@ -139,8 +138,8 @@ const LiveOrdersScreen = () => {
       </View>
 
       {/* Kanban Board */}
-      <ScrollView 
-        horizontal 
+      <ScrollView
+        horizontal
         pagingEnabled={false}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.boardContent}

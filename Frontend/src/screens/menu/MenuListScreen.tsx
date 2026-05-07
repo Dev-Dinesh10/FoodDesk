@@ -19,14 +19,14 @@ import AddItemModal from '../../components/menu/AddItemModal';
 // Local Image Assets
 const IMAGES = {
   biryani: require('../../../assets/chickenBiriyani.jpeg'),
-  dalrice: require('../../../assets/dalrice.webp'),
+  dalrice: require('../../../assets/dalrice.jpg'),
   icecream: require('../../../assets/Ice-cream.jpeg'),
   paneer: require('../../../assets/PaneerRoti.jpg'),
   salad: require('../../../assets/salad.jpg'),
 };
 
 const CATEGORIES = ['All', 'Breakfast', 'Lunch', 'Snack', 'Dinner', 'Night'];
-const FILTERS = ['All', 'Active Only', 'Sold Out'];
+const FILTERS = ['All', 'Active Only', 'Sold Out', 'Veg', 'Non-Veg'];
 
 const MenuListScreen = () => {
   const [activeCategory, setActiveCategory] = useState('All');
@@ -36,11 +36,11 @@ const MenuListScreen = () => {
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
 
   const [items, setItems] = useState([
-    { id: '1', name: 'Dal Rice', category: 'Lunch', price: 120, image: IMAGES.dalrice, isAvailable: true, isSoldOut: false, remainingQty: 38, orderedToday: 142, isVegetarian: true },
-    { id: '2', name: 'Chicken Biryani', category: 'Lunch', price: 240, image: IMAGES.biryani, isAvailable: true, isSoldOut: false, remainingQty: 12, orderedToday: 87, isVegetarian: false },
-    { id: '3', name: 'Paneer Masala + Roti', category: 'Dinner', price: 180, image: IMAGES.paneer, isAvailable: true, isSoldOut: false, remainingQty: 45, orderedToday: 65, isVegetarian: true },
-    { id: '4', name: 'Garden Salad', category: 'Snack', price: 90, image: IMAGES.salad, isAvailable: false, isSoldOut: false, remainingQty: 20, orderedToday: 15, isVegetarian: true },
-    { id: '5', name: 'Chocolate Ice Cream', category: 'Snack', price: 60, image: IMAGES.icecream, isAvailable: true, isSoldOut: true, remainingQty: 0, orderedToday: 55, isVegetarian: true },
+    { id: '1', name: 'Dal Rice', category: 'Lunch', price: 120, image: IMAGES.dalrice, isAvailable: true, isSoldOut: false, orderedToday: 142, isVegetarian: true },
+    { id: '2', name: 'Chicken Biryani', category: 'Lunch', price: 240, image: IMAGES.biryani, isAvailable: true, isSoldOut: false, orderedToday: 87, isVegetarian: false },
+    { id: '3', name: 'Paneer Masala + Roti', category: 'Dinner', price: 180, image: IMAGES.paneer, isAvailable: true, isSoldOut: false, orderedToday: 65, isVegetarian: true },
+    { id: '4', name: 'Garden Salad', category: 'Snack', price: 90, image: IMAGES.salad, isAvailable: false, isSoldOut: false, orderedToday: 15, isVegetarian: true },
+    { id: '5', name: 'Chocolate Ice Cream', category: 'Snack', price: 60, image: IMAGES.icecream, isAvailable: true, isSoldOut: true, orderedToday: 55, isVegetarian: true },
   ]);
 
   const toggleAvailability = (id: string) => {
@@ -51,7 +51,7 @@ const MenuListScreen = () => {
 
   const markSoldOut = (id: string) => {
     setItems(prev => prev.map(item => 
-      item.id === id ? { ...item, isSoldOut: true, remainingQty: 0 } : item
+      item.id === id ? { ...item, isSoldOut: true } : item
     ));
   };
 
@@ -75,7 +75,9 @@ const MenuListScreen = () => {
     const filterMatch = 
       activeFilter === 'All' || 
       (activeFilter === 'Active Only' && item.isAvailable && !item.isSoldOut) ||
-      (activeFilter === 'Sold Out' && item.isSoldOut);
+      (activeFilter === 'Sold Out' && item.isSoldOut) ||
+      (activeFilter === 'Veg' && item.isVegetarian) ||
+      (activeFilter === 'Non-Veg' && !item.isVegetarian);
     return categoryMatch && filterMatch;
   });
 
@@ -116,13 +118,12 @@ const MenuListScreen = () => {
         renderItem={({ item }) => (
           <MenuItemCard
             name={item.name}
-            category={item.category}
             price={item.price}
             image={item.image}
             isAvailable={item.isAvailable}
             isSoldOut={item.isSoldOut}
-            remainingQty={item.remainingQty}
             orderedToday={item.orderedToday}
+            isVegetarian={item.isVegetarian}
             onToggleAvailability={() => toggleAvailability(item.id)}
             onMarkSoldOut={() => markSoldOut(item.id)}
             onEdit={() => handleEdit(item)}
@@ -196,11 +197,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: SPACING.lg,
     paddingVertical: SPACING.md,
-    gap: 12,
+    gap: 8,
   },
   filterChip: {
     paddingVertical: 6,
-    paddingHorizontal: 16,
+    paddingHorizontal: 12,
     borderRadius: 20,
     backgroundColor: COLORS.surface,
     borderWidth: 1,
