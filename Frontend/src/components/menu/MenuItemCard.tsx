@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,10 +8,11 @@ import {
   Switch,
   Platform
 } from 'react-native';
+import InventoryModal from './InventoryModal';
 import { MaterialIcons } from '@expo/vector-icons';
 import { COLORS } from '../../constants/colors';
 import { SPACING } from '../../constants/spacing';
-import { TYPOGRAPHY, FONT_WEIGHT } from '../../constants/typography';
+import { FONT_WEIGHT } from '../../constants/typography';
 
 interface MenuItemCardProps {
   name: string;
@@ -24,6 +25,7 @@ interface MenuItemCardProps {
   onToggleAvailability: () => void;
   onMarkSoldOut: () => void;
   onEdit: () => void;
+  onPress?: () => void;
 }
 
 const TOTAL_STOCK = 200;
@@ -46,11 +48,15 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
   onToggleAvailability,
   onMarkSoldOut,
   onEdit,
+  onPress,
 }) => {
   const remainingQty = Math.max(TOTAL_STOCK - orderedToday, 0);
+  const [isInventoryVisible, setIsInventoryVisible] = useState(false);
+
+  const CardWrapper = onPress ? TouchableOpacity : View;
 
   return (
-    <View style={[styles.card, !isAvailable && styles.greyedOut]}>
+    <CardWrapper onPress={onPress} style={[styles.card, !isAvailable && styles.greyedOut]} activeOpacity={0.95}>
 
       {/* ── Top-right: Toggle + Veg/Non-Veg dot (absolutely positioned) ── */}
       <View style={styles.topRightActions}>
@@ -61,14 +67,31 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
           thumbColor={Platform.OS === 'ios' ? undefined : COLORS.white}
           style={{ transform: [{ scaleX: 0.65 }, { scaleY: 0.65 }] }}
         />
-        <View style={[styles.vegIndicatorBox, { borderColor: isVegetarian ? '#22C55E' : '#EF4444' }]}>
-          <View style={[styles.vegIndicatorDot, { backgroundColor: isVegetarian ? '#22C55E' : '#EF4444' }]} />
-        </View>
+        <TouchableOpacity onPress={() => setIsInventoryVisible(true)}>
+          <MaterialIcons name="inventory" size={16} color={COLORS.textSecondary} style={{ marginTop: 2, right: -7 }} />
+        </TouchableOpacity>
       </View>
+
+      <InventoryModal
+        visible={isInventoryVisible}
+        onClose={() => setIsInventoryVisible(false)}
+        onSave={(data) => {
+          console.log('Saved inventory data:', data);
+        }}
+        itemName={name}
+        initialData={{
+          dailyLimit: '100',
+          lowStockAlert: '10',
+          autoDisable: true
+        }}
+      />
 
       {/* ── Left Column: Image + actions ── */}
       <View style={styles.leftColumn}>
         <View style={styles.thumbnailContainer}>
+          <View style={[styles.vegIndicatorBox, { position: 'absolute', top: 6, left: 6, zIndex: 10, right: undefined, borderColor: isVegetarian ? '#22C55E' : '#EF4444', backgroundColor: COLORS.white }]}>
+            <View style={[styles.vegIndicatorDot, { backgroundColor: isVegetarian ? '#22C55E' : '#EF4444' }]} />
+          </View>
           {image ? (
             <Image source={image} style={styles.thumbnail} />
           ) : (
@@ -90,8 +113,8 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
           </TouchableOpacity>
 
           {!isSoldOut && (
-            <TouchableOpacity style={styles.soldOutBtnInline} onPress={onMarkSoldOut}>
-              <Text style={styles.soldOutBtnText}>Sold Out</Text>
+            <TouchableOpacity onPress={onMarkSoldOut} style={{ width: 40, height: 30 }}>
+              <Image source={require('../../../assets/sold-out.png')} style={styles.soldOutImageButton} resizeMode="contain" />
             </TouchableOpacity>
           )}
         </View>
@@ -144,7 +167,7 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
         </View>
       </View>
 
-    </View>
+    </CardWrapper>
   );
 };
 
@@ -229,6 +252,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(239, 68, 68, 0.6)',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  soldOutImage: {
+    width: '70%',
+    height: '70%',
+  },
+  soldOutImageButton: {
+    width: '100%',
+    height: '100%',
   },
   soldOutText: {
     color: COLORS.white,

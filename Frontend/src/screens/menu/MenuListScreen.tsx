@@ -15,6 +15,7 @@ import { TYPOGRAPHY, FONT_WEIGHT } from '../../constants/typography';
 import MenuItemCard from '../../components/menu/MenuItemCard';
 import EditItemModal from '../../components/menu/EditItemModal';
 import AddItemModal from '../../components/menu/AddItemModal';
+import MenuItemDetailsModal from '../../components/menu/MenuItemDetailsModal';
 
 // Local Image Assets
 const IMAGES = {
@@ -34,6 +35,7 @@ const MenuListScreen = () => {
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
+  const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
 
   const [items, setItems] = useState([
     { id: '1', name: 'Dal Rice', category: 'Lunch', price: 120, image: IMAGES.dalrice, isAvailable: true, isSoldOut: false, orderedToday: 142, isVegetarian: true },
@@ -127,6 +129,10 @@ const MenuListScreen = () => {
             onToggleAvailability={() => toggleAvailability(item.id)}
             onMarkSoldOut={() => markSoldOut(item.id)}
             onEdit={() => handleEdit(item)}
+            onPress={() => {
+              setSelectedItem(item);
+              setIsDetailsModalVisible(true);
+            }}
           />
         )}
         contentContainerStyle={styles.listContainer}
@@ -143,6 +149,17 @@ const MenuListScreen = () => {
       <TouchableOpacity style={styles.fab} onPress={() => setIsAddModalVisible(true)}>
         <MaterialIcons name="add" size={28} color={COLORS.white} />
       </TouchableOpacity>
+
+      {/* Details Modal */}
+      <MenuItemDetailsModal
+        visible={isDetailsModalVisible}
+        onClose={() => setIsDetailsModalVisible(false)}
+        item={selectedItem}
+        onEdit={() => {
+          setIsDetailsModalVisible(false);
+          setIsEditModalVisible(true);
+        }}
+      />
 
       {/* Edit Modal */}
       <EditItemModal

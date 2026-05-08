@@ -281,13 +281,9 @@ const AddItemModal: React.FC<AddItemModalProps> = ({ visible, onClose, onAdd }) 
               {/* Photo Upload */}
               <Text style={s.label}>Photo</Text>
               <View style={s.photoRow}>
-                <View style={s.photoBox}>
+                <TouchableOpacity style={s.photoBox} activeOpacity={0.75} onPress={() => console.log('Open camera/gallery')}>
                   <MaterialIcons name="add-photo-alternate" size={28} color="#94A3B8" />
-                  <Text style={s.photoHint}>Drag & Drop</Text>
-                </View>
-                <TouchableOpacity style={s.uploadBtn} activeOpacity={0.75}>
-                  <MaterialIcons name="file-upload" size={17} color="#374151" />
-                  <Text style={s.uploadText}>Upload Photo</Text>
+                  <Text style={s.photoHint}>Tap to add photo</Text>
                 </TouchableOpacity>
               </View>
 
@@ -904,8 +900,8 @@ const s = StyleSheet.create({
   // ── Photo
   photoRow: {
     flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
-    gap: 14,
     marginTop: 4,
   },
   photoBox: {
@@ -920,25 +916,9 @@ const s = StyleSheet.create({
     borderStyle: 'dashed',
   },
   photoHint: {
-    fontSize: 9,
+    fontSize: 10,
     color: '#CBD5E1',
     marginTop: 4,
-  },
-  uploadBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#E2E8F0',
-    backgroundColor: '#fff',
-    gap: 6,
-  },
-  uploadText: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: '#374151',
   },
 
   // ── Input

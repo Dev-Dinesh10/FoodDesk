@@ -45,10 +45,13 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     shadowOffset: { width: 0, height: 3 },
     elevation: 3,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     marginBottom: SPACING.sm,
   },
   iconContainer: {
@@ -70,6 +73,7 @@ const styles = StyleSheet.create({
     fontSize: TYPOGRAPHY.lg,
     color: COLORS.textPrimary,
     fontWeight: FONT_WEIGHT.bold,
+    textAlign: 'center',
   },
 });
 

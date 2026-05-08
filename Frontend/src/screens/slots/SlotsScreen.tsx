@@ -53,6 +53,11 @@ const SlotsScreen = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [selectedWindow, setSelectedWindow] = useState<SlotWindow | null>(null);
+  const [expandedIds, setExpandedIds] = useState<string[]>([]);
+
+  const toggleExpand = (id: string) => {
+    setExpandedIds(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
+  };
 
   const toggleActive = (id: string) => {
     setWindows(prev =>
@@ -137,13 +142,25 @@ const SlotsScreen = () => {
               </View>
             </View>
 
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.slotsScroll}>
-              {window.slots.map((slot, index) => (
+            <View style={styles.slotsContainer}>
+              {window.slots.slice(0, expandedIds.includes(window.id) ? undefined : 4).map((slot, index) => (
                 <View key={index} style={styles.slotChip}>
                   <Text style={styles.slotText}>{slot}</Text>
                 </View>
               ))}
-            </ScrollView>
+            </View>
+            
+            {window.slots.length > 4 && (
+              <View style={styles.expandWrapper}>
+                <TouchableOpacity onPress={() => toggleExpand(window.id)} style={styles.expandBtn}>
+                  <MaterialIcons 
+                    name={expandedIds.includes(window.id) ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} 
+                    size={20} 
+                    color={COLORS.textSecondary} 
+                  />
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
         ))}
       </ScrollView>
@@ -263,9 +280,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 12,
   },
-  slotsScroll: {
+  slotsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 6,
     paddingVertical: 4,
+    alignItems: 'center',
+  },
+  expandWrapper: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 6,
+    width: '100%',
+  },
+  expandBtn: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: '#F1F5F9',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
   },
   slotChip: {
     backgroundColor: '#F1F5F9',

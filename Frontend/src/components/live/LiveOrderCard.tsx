@@ -14,6 +14,7 @@ interface LiveOrderCardProps {
   slotTime: string;
   status: OrderStatus;
   slaProgress: number; // 0 to 1
+  totalTime?: number; // Total time in minutes
   onStartPrep?: () => void;
   onMarkReady?: () => void;
 }
@@ -31,6 +32,7 @@ const LiveOrderCard: React.FC<LiveOrderCardProps> = ({
   slotTime,
   status,
   slaProgress,
+  totalTime = 10, // Default to 10 mins if not provided
   onStartPrep,
   onMarkReady,
 }) => {
@@ -70,15 +72,23 @@ const LiveOrderCard: React.FC<LiveOrderCardProps> = ({
 
       {/* SLA Progress Bar */}
       <View style={styles.slaContainer}>
-        <Text style={[styles.slaLabel, { color: getSlaColor() }]}>
-          {isBreached ? 'SLA BREACHED' : `${Math.round(slaProgress * 100)} min`}
-        </Text>
+        <View style={styles.movingLabelWrapper}>
+          <View style={[styles.movingLabelContainer, { left: `${Math.min(Math.max(slaProgress * 100, 12), 88)}%` }]}>
+            <View style={[styles.labelBubble, { backgroundColor: getSlaColor() }]}>
+              <Text style={styles.movingLabelText} numberOfLines={1}>
+                {isBreached ? 'BREACHED' : `${Math.round(slaProgress * totalTime)} min`}
+              </Text>
+            </View>
+            <View style={[styles.triangle, { borderTopColor: getSlaColor() }]} />
+          </View>
+        </View>
         <View style={styles.slaBackground}>
           <View style={[
             styles.slaFill,
             { width: `${Math.min(slaProgress * 100, 100)}%`, backgroundColor: getSlaColor() }
           ]} />
         </View>
+        <Text style={styles.totalTimeText}>{totalTime} min</Text>
       </View>
 
       {/* Actions */}
@@ -179,11 +189,47 @@ const styles = StyleSheet.create({
   slaFill: {
     height: '100%',
   },
-  slaLabel: {
-    fontSize: 10,
-    fontWeight: FONT_WEIGHT.bold,
-    textAlign: 'right',
+  movingLabelWrapper: {
+    height: 24,
+    position: 'relative',
     marginBottom: 4,
+  },
+  movingLabelContainer: {
+    position: 'absolute',
+    alignItems: 'center',
+    width: 60,
+    marginLeft: -30, // Half of width
+    bottom: 0,
+  },
+  labelBubble: {
+    paddingVertical: 2,
+    paddingHorizontal: 6,
+    borderRadius: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  movingLabelText: {
+    fontSize: 8,
+    fontWeight: FONT_WEIGHT.bold,
+    color: COLORS.white,
+  },
+  triangle: {
+    width: 0,
+    height: 0,
+    backgroundColor: 'transparent',
+    borderStyle: 'solid',
+    borderLeftWidth: 4,
+    borderRightWidth: 4,
+    borderTopWidth: 4,
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent',
+  },
+  totalTimeText: {
+    fontSize: 10,
+    color: COLORS.textSecondary,
+    fontWeight: FONT_WEIGHT.medium,
+    textAlign: 'right',
+    marginTop: 4,
   },
   actions: {
     flexDirection: 'row',

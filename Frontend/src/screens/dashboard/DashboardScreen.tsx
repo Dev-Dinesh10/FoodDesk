@@ -86,18 +86,18 @@ const DashboardScreen = () => {
       <Text style={styles.sectionTitle}>Quick Actions</Text>
       <View style={styles.quickActionsRow}>
         <QuickActionButton
-          label="View Pre-Orders"
-          onPress={() => navigation.navigate('PreOrders')}
+          label="Slots"
+          onPress={() => navigation.navigate('Slots')}
         />
         <View style={styles.actionGap} />
         <QuickActionButton
-          label="Open Live Counter"
-          onPress={() => navigation.navigate('LiveOrders')}
+          label="Daily Report"
+          onPress={() => navigation.navigate('DailyReports')}
         />
         <View style={styles.actionGap} />
         <QuickActionButton
-          label="Manage Menu"
-          onPress={() => navigation.navigate('Menu')}
+          label="Counter"
+          onPress={() => navigation.navigate('CounterDisplay')}
         />
       </View>
 

@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { 
-  Modal, 
-  StyleSheet, 
-  Text, 
-  View, 
-  TouchableOpacity, 
-  ScrollView, 
+import {
+  Modal,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ScrollView,
   Switch,
-  Platform 
+  Platform
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { COLORS } from '../../constants/colors';
@@ -93,7 +93,7 @@ const IngredientModal: React.FC<IngredientModalProps> = ({ visible, onClose, dat
             </TouchableOpacity>
             <TouchableOpacity style={styles.downloadButton}>
               <MaterialIcons name="description" size={18} color={COLORS.white} />
-              <Text style={styles.downloadButtonText}>Download CSV</Text>
+              <Text style={styles.downloadButtonText}>Download</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -110,10 +110,10 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: COLORS.background,
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    padding: SPACING.lg,
-    maxHeight: '90%',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    padding: SPACING.md,
+    maxHeight: '70%',
   },
   header: {
     flexDirection: 'row',
@@ -194,17 +194,19 @@ const styles = StyleSheet.create({
   },
   footer: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
-    gap: SPACING.sm,
+    justifyContent: 'center',
+    gap: 12,
     paddingTop: SPACING.sm,
   },
   closeButton: {
+    width: 120,
     paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 10,
+    borderRadius: 8,
     borderWidth: 1,
     borderColor: COLORS.border,
     backgroundColor: COLORS.surface,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   closeButtonText: {
     fontSize: 14,
@@ -212,13 +214,14 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
   },
   downloadButton: {
+    width: 120,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 10,
+    borderRadius: 8,
     backgroundColor: COLORS.primary,
-    gap: 8,
+    gap: 6,
   },
   downloadButtonText: {
     fontSize: 14,
