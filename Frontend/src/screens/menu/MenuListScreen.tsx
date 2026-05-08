@@ -5,8 +5,7 @@ import {
   View, 
   ScrollView, 
   TouchableOpacity, 
-  FlatList,
-  SafeAreaView
+  FlatList
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { COLORS } from '../../constants/colors';
@@ -16,6 +15,7 @@ import MenuItemCard from '../../components/menu/MenuItemCard';
 import EditItemModal from '../../components/menu/EditItemModal';
 import AddItemModal from '../../components/menu/AddItemModal';
 import MenuItemDetailsModal from '../../components/menu/MenuItemDetailsModal';
+import Layout from '../../components/layout/Layout';
 
 // Local Image Assets
 const IMAGES = {
@@ -84,6 +84,7 @@ const MenuListScreen = () => {
   });
 
   return (
+    <Layout title="Menu" activeBottomTabKey="menu">
     <View style={styles.container}>
       {/* Category Tabs */}
       <View style={styles.tabBar}>
@@ -176,6 +177,7 @@ const MenuListScreen = () => {
         onAdd={handleAddItem}
       />
     </View>
+    </Layout>
   );
 };
 

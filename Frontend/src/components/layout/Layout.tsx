@@ -5,16 +5,19 @@ import Header from './Header';
 import SideTab, { SideTabItem } from './SideTab';
 import BottomTab, { BottomTabItem } from './BottomTab';
 import { COLORS } from '../../constants/colors';
+import { useTabNavigation } from '../../navigation/TabNavigator';
+import { useAuth } from '../../context/AuthContext';
 
 interface LayoutProps {
   children: React.ReactNode;
   title?: string;
+  activeBottomTabKey?: string;
   sideTabItems?: SideTabItem[];
   bottomTabItems?: BottomTabItem[];
-  activeBottomTabKey?: string;
-  onSideTabPress?: (key: string) => void;
+  /** Override default bottom-tab handler (rarely needed) */
   onBottomTabPress?: (key: string) => void;
-  onLogout?: () => void;
+  /** Override default side-tab handler (rarely needed) */
+  onSideTabPress?: (key: string) => void;
   isOnline?: boolean;
 }
 
@@ -38,25 +41,26 @@ const defaultBottomTabs: BottomTabItem[] = [
 const Layout: React.FC<LayoutProps> = ({
   children,
   title = 'FoodDesk',
+  activeBottomTabKey = 'dashboard',
   sideTabItems = defaultSideTabs,
   bottomTabItems = defaultBottomTabs,
-  activeBottomTabKey = 'dashboard',
-  onSideTabPress,
   onBottomTabPress,
-  onLogout,
+  onSideTabPress,
   isOnline = true,
 }) => {
   const [isSideTabOpen, setIsSideTabOpen] = useState(false);
   const insets = useSafeAreaInsets();
+  const { handleBottomTabPress, handleSideTabPress } = useTabNavigation();
+  const { onLogout } = useAuth();
 
   const bottomPadding = useMemo(() => Math.max(8, insets.bottom), [insets.bottom]);
 
   return (
     <View style={styles.root}>
       <View style={{ paddingTop: insets.top }}>
-        <Header 
-          title={title} 
-          onMenuPress={() => setIsSideTabOpen(true)} 
+        <Header
+          title={title}
+          onMenuPress={() => setIsSideTabOpen(true)}
           onLogout={onLogout}
         />
       </View>
@@ -67,7 +71,7 @@ const Layout: React.FC<LayoutProps> = ({
         <BottomTab
           items={bottomTabItems}
           activeKey={activeBottomTabKey}
-          onItemPress={onBottomTabPress}
+          onItemPress={onBottomTabPress ?? handleBottomTabPress}
         />
       </View>
 
@@ -75,7 +79,7 @@ const Layout: React.FC<LayoutProps> = ({
         visible={isSideTabOpen}
         items={sideTabItems}
         activeKey={activeBottomTabKey}
-        onItemPress={onSideTabPress}
+        onItemPress={onSideTabPress ?? handleSideTabPress}
         onClose={() => setIsSideTabOpen(false)}
       />
     </View>

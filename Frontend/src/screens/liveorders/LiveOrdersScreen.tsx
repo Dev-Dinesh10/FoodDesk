@@ -6,7 +6,6 @@ import {
   ScrollView,
   TouchableOpacity,
   Dimensions,
-  SafeAreaView,
   FlatList
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -14,6 +13,7 @@ import { COLORS } from '../../constants/colors';
 import { SPACING } from '../../constants/spacing';
 import { TYPOGRAPHY, FONT_WEIGHT } from '../../constants/typography';
 import LiveOrderCard, { OrderStatus } from '../../components/live/LiveOrderCard';
+import Layout from '../../components/layout/Layout';
 
 const { width } = Dimensions.get('window');
 
@@ -65,6 +65,7 @@ const LiveOrdersScreen = () => {
   ];
 
   return (
+    <Layout title="Live Orders" activeBottomTabKey="live-orders">
     <View style={styles.container}>
       {/* Filter Chips (Pill Shaped - Matching Menu Design) */}
       <View style={styles.filterBar}>
@@ -155,6 +156,7 @@ const LiveOrdersScreen = () => {
         ))}
       </ScrollView>
     </View>
+    </Layout>
   );
 };
 

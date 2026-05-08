@@ -13,6 +13,7 @@ import { COLORS } from '../../constants/colors';
 import { SPACING } from '../../constants/spacing';
 import { FONT_WEIGHT } from '../../constants/typography';
 import AddSlotModal from '../../components/slots/AddSlotModal';
+import Layout from '../../components/layout/Layout';
 
 interface SlotWindow {
   id: string;
@@ -86,6 +87,7 @@ const SlotsScreen = () => {
   };
 
   return (
+    <Layout title="Slots" activeBottomTabKey="slots">
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.header}>
@@ -177,6 +179,7 @@ const SlotsScreen = () => {
         initialData={selectedWindow}
       />
     </View>
+    </Layout>
   );
 };
 

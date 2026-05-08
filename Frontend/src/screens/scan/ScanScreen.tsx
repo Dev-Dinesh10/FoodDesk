@@ -8,7 +8,6 @@ import {
   Animated, 
   Dimensions,
   Vibration,
-  SafeAreaView,
   KeyboardAvoidingView,
   Platform
 } from 'react-native';
@@ -16,6 +15,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { COLORS } from '../../constants/colors';
 import { SPACING } from '../../constants/spacing';
 import { TYPOGRAPHY, FONT_WEIGHT } from '../../constants/typography';
+import Layout from '../../components/layout/Layout';
 
 const { width, height } = Dimensions.get('window');
 
@@ -80,7 +80,8 @@ const ScanScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <Layout title="Scan" activeBottomTabKey="scan">
+    <View style={styles.container}>
       <KeyboardAvoidingView 
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.content}
@@ -150,7 +151,8 @@ const ScanScreen = () => {
           </Animated.View>
         )}
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
+    </Layout>
   );
 };
 

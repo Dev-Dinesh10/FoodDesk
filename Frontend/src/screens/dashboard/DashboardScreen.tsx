@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View, TouchableOpacity, Switch, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { AppStackParamList } from '../../navigation/AppNavigator';
+import { AppStackParamList } from '../../navigation/StackNavigator';
+import Layout from '../../components/layout/Layout';
 import { COLORS } from '../../constants/colors';
 import { TYPOGRAPHY, FONT_WEIGHT } from '../../constants/typography';
 import { SPACING } from '../../constants/spacing';
@@ -24,6 +25,7 @@ const DashboardScreen = () => {
   ];
 
   return (
+    <Layout title="Dashboard" activeBottomTabKey="dashboard">
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <View style={styles.topInfoBar}>
         <View>
@@ -118,6 +120,7 @@ const DashboardScreen = () => {
         )}
       </View>
     </ScrollView>
+    </Layout>
   );
 };
 

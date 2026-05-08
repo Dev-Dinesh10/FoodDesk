@@ -4,13 +4,13 @@ import {
   Text,
   View,
   FlatList,
-  TouchableOpacity,
-  SafeAreaView
+  TouchableOpacity
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { COLORS } from '../../constants/colors';
 import { SPACING } from '../../constants/spacing';
 import { TYPOGRAPHY, FONT_WEIGHT } from '../../constants/typography';
+import Layout from '../../components/layout/Layout';
 
 const SettlementsScreen = () => {
   const currentPayout = {
@@ -114,7 +114,8 @@ const SettlementsScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <Layout title="Settlements & Payouts" activeBottomTabKey="settlements">
+    <View style={styles.container}>
       <FlatList
         data={history}
         keyExtractor={item => item.id}
@@ -148,7 +149,8 @@ const SettlementsScreen = () => {
           );
         }}
       />
-    </SafeAreaView>
+    </View>
+    </Layout>
   );
 };
 

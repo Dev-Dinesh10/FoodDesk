@@ -1,29 +1,37 @@
-// Root navigator — checks auth and routes to Login or Main app
-
-import React, { useState } from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from '../screens/auth/LoginScreen';
-import AppNavigator from './AppNavigator';
+import StackNavigator from './StackNavigator';
+import { AuthProvider, useAuth } from '../context/AuthContext';
 
 const Stack = createNativeStackNavigator();
 
-export default function RootNavigator() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+// Re-export useAuth so any existing imports from this file still work
+export { useAuth };
+
+function AppNavigation() {
+  const { isLoggedIn, onLogin } = useAuth();
 
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {!isLoggedIn ? (
           <Stack.Screen name="Login">
-            {() => <LoginScreen onLoginSuccess={() => setIsLoggedIn(true)} />}
+            {() => <LoginScreen onLoginSuccess={onLogin} />}
           </Stack.Screen>
         ) : (
-          <Stack.Screen name="Main">
-            {() => <AppNavigator onLogout={() => setIsLoggedIn(false)} />}
-          </Stack.Screen>
+          <Stack.Screen name="Main" component={StackNavigator} />
         )}
       </Stack.Navigator>
     </NavigationContainer>
+  );
+}
+
+export default function RootNavigator() {
+  return (
+    <AuthProvider>
+      <AppNavigation />
+    </AuthProvider>
   );
 }

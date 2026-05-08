@@ -3,19 +3,20 @@ import {
   View, 
   Text, 
   StyleSheet, 
-  ScrollView, 
-  SafeAreaView 
+  ScrollView
 } from 'react-native';
 import { COLORS } from '../../constants/colors';
 import { SPACING } from '../../constants/spacing';
 import { TYPOGRAPHY, FONT_WEIGHT } from '../../constants/typography';
+import Layout from '../../components/layout/Layout';
 
 const CounterDisplayScreen = () => {
   const readyTokens = ['A-046', 'A-045', 'A-044', 'A-043', 'A-042', 'A-041'];
   const collectedTokens = ['A-040', 'A-039', 'A-038'];
 
   return (
-    <SafeAreaView style={styles.container}>
+    <Layout title="Counter Display" activeBottomTabKey="counter-display">
+    <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <Text style={styles.screenTitle}>Counter display</Text>
 
@@ -51,7 +52,8 @@ const CounterDisplayScreen = () => {
 
         <Text style={styles.footerInfo}>Manual overrides today: 0/5</Text>
       </ScrollView>
-    </SafeAreaView>
+    </View>
+    </Layout>
   );
 };
 

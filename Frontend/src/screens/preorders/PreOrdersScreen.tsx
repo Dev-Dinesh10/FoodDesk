@@ -7,6 +7,7 @@ import { TYPOGRAPHY, FONT_WEIGHT } from '../../constants/typography';
 import MetricCard from '../../components/dashboard/MetricCard';
 import QuickActionButton from '../../components/dashboard/QuickActionButton';
 import PreOrderItemRow from '../../components/preorders/PreOrderItemRow';
+import Layout from '../../components/layout/Layout';
 
 import IngredientModal from '../../components/preorders/IngredientModal';
 
@@ -80,6 +81,7 @@ const PreOrdersScreen = () => {
   const totalGMV = items.reduce((sum, item) => sum + (item.isUnavailable ? 0 : parseInt(item.gmv.replace(',', ''))), 0);
 
   return (
+    <Layout title="Pre-Orders" activeBottomTabKey="pre-orders">
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* Header Section */}
@@ -191,6 +193,7 @@ const PreOrdersScreen = () => {
         data={ingredientData}
       />
     </View>
+    </Layout>
   );
 };
 

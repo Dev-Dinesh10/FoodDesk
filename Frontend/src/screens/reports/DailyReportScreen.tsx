@@ -5,14 +5,14 @@ import {
   View, 
   ScrollView, 
   TouchableOpacity, 
-  Dimensions,
-  SafeAreaView
+  Dimensions
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { BarChart, ChartGroup, ChartBar, ChartLabel } from 'victory-native';
 import { COLORS } from '../../constants/colors';
 import { SPACING } from '../../constants/spacing';
 import { TYPOGRAPHY, FONT_WEIGHT } from '../../constants/typography';
+import Layout from '../../components/layout/Layout';
 
 const { width } = Dimensions.get('window');
 
@@ -46,9 +46,9 @@ const DailyReportScreen = () => {
   const noShowRate = 7.04; // (10 / 142) * 100
 
   return (
+    <Layout title="Daily Reports" activeBottomTabKey="daily-reports">
     <View style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        {/* Date Selector */}
+      {/* Date Selector */}
         <View style={styles.header}>
           <TouchableOpacity style={styles.dateSelector}>
             <MaterialIcons name="event" size={20} color={COLORS.primary} />
@@ -163,8 +163,8 @@ const DailyReportScreen = () => {
           </View>
 
         </ScrollView>
-      </SafeAreaView>
     </View>
+    </Layout>
   );
 };
 

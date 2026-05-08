@@ -6,11 +6,13 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { List, Switch, Divider } from 'react-native-paper';
 import { COLORS } from '../../constants/colors';
+import Layout from '../../components/layout/Layout';
 
 const SettingsScreen = () => {
   const [isNotificationsEnabled, setIsNotificationsEnabled] = React.useState(true);
 
   return (
+    <Layout title="Settings" activeBottomTabKey="settings">
     <View style={styles.container}>
       <List.Section>
         <List.Subheader>App Settings</List.Subheader>
@@ -33,6 +35,7 @@ const SettingsScreen = () => {
         />
       </List.Section>
     </View>
+    </Layout>
   );
 };
 
