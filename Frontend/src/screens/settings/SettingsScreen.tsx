@@ -29,7 +29,7 @@ const SettingsScreen = () => {
         <List.Item
           title="Kitchen Display Mode"
           description="Optimize layout for large screens"
-          onPress={() => {}}
+          onPress={() => { }}
         />
       </List.Section>
     </View>

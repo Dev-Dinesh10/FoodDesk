@@ -104,11 +104,25 @@ const MenuItemDetailsModal: React.FC<MenuItemDetailsModalProps> = ({
 
               <View style={styles.divider} />
 
-              {/* Variants */}
-              <Text style={styles.sectionLabel}>Variants</Text>
-              <View style={styles.variantRow}>
-                <View style={styles.variant}><Text style={styles.variantName}>Regular</Text><Text style={styles.variantPrice}>₹{item.price}</Text></View>
-                <View style={styles.variant}><Text style={styles.variantName}>Large</Text><Text style={styles.variantPrice}>₹{item.price + 50}</Text></View>
+              {/* Additional Details */}
+              <Text style={styles.sectionLabel}>Additional Details</Text>
+              <View style={styles.detailGrid}>
+                <View style={styles.detailItem}>
+                  <Text style={styles.detailLabel}>Offer Price</Text>
+                  <Text style={styles.detailValue}>₹{item.offerPrice || (item.price - 30)}</Text>
+                </View>
+                <View style={styles.detailItem}>
+                  <Text style={styles.detailLabel}>Packing Cost</Text>
+                  <Text style={styles.detailValue}>₹{item.packingCost || '10'}</Text>
+                </View>
+                <View style={styles.detailItem}>
+                  <Text style={styles.detailLabel}>Customization</Text>
+                  <Text style={styles.detailValue}>{item.isCustomizable ? 'Yes' : 'No'}</Text>
+                </View>
+                <View style={styles.detailItem}>
+                  <Text style={styles.detailLabel}>Course</Text>
+                  <Text style={styles.detailValue}>{item.course || 'Main Course'}</Text>
+                </View>
               </View>
 
             </View>
@@ -306,29 +320,30 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     fontWeight: FONT_WEIGHT.medium,
   },
-  variantRow: {
-    gap: 6,
+  detailGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
     marginTop: 4,
   },
-  variant: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    backgroundColor: COLORS.surface,
-    paddingVertical: 6,
+  detailItem: {
+    width: '48%',
+    backgroundColor: '#F8FAFC',
+    paddingVertical: 8,
     paddingHorizontal: 10,
-    borderRadius: 6,
+    borderRadius: 8,
     borderWidth: 1,
-    borderColor: COLORS.border,
+    borderColor: '#E2E8F0',
   },
-  variantName: {
-    fontSize: 12,
-    color: COLORS.textPrimary,
-    fontWeight: FONT_WEIGHT.medium,
+  detailLabel: {
+    fontSize: 10,
+    color: COLORS.textSecondary,
+    marginBottom: 2,
   },
-  variantPrice: {
+  detailValue: {
     fontSize: 12,
-    color: COLORS.primary,
     fontWeight: FONT_WEIGHT.bold,
+    color: COLORS.textPrimary,
   },
   footer: {
     flexDirection: 'row',

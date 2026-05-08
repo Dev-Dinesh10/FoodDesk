@@ -38,11 +38,11 @@ const MenuListScreen = () => {
   const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
 
   const [items, setItems] = useState([
-    { id: '1', name: 'Dal Rice', category: 'Lunch', price: 120, image: IMAGES.dalrice, isAvailable: true, isSoldOut: false, orderedToday: 142, isVegetarian: true },
-    { id: '2', name: 'Chicken Biryani', category: 'Lunch', price: 240, image: IMAGES.biryani, isAvailable: true, isSoldOut: false, orderedToday: 87, isVegetarian: false },
-    { id: '3', name: 'Paneer Masala + Roti', category: 'Dinner', price: 180, image: IMAGES.paneer, isAvailable: true, isSoldOut: false, orderedToday: 65, isVegetarian: true },
-    { id: '4', name: 'Garden Salad', category: 'Snack', price: 90, image: IMAGES.salad, isAvailable: false, isSoldOut: false, orderedToday: 15, isVegetarian: true },
-    { id: '5', name: 'Chocolate Ice Cream', category: 'Snack', price: 60, image: IMAGES.icecream, isAvailable: true, isSoldOut: true, orderedToday: 55, isVegetarian: true },
+    { id: '1', name: 'Dal Rice', category: 'Lunch', price: 120, image: IMAGES.dalrice, isAvailable: true, isSoldOut: false, orderedToday: 142, isVegetarian: true, course: 'Main Course' },
+    { id: '2', name: 'Chicken Biryani', category: 'Lunch', price: 240, image: IMAGES.biryani, isAvailable: true, isSoldOut: false, orderedToday: 87, isVegetarian: false, course: 'Main Course' },
+    { id: '3', name: 'Paneer Masala + Roti', category: 'Dinner', price: 180, image: IMAGES.paneer, isAvailable: true, isSoldOut: false, orderedToday: 65, isVegetarian: true, course: 'Main Course' },
+    { id: '4', name: 'Garden Salad', category: 'Snack', price: 90, image: IMAGES.salad, isAvailable: false, isSoldOut: false, orderedToday: 15, isVegetarian: true, course: 'Starter' },
+    { id: '5', name: 'Chocolate Ice Cream', category: 'Snack', price: 60, image: IMAGES.icecream, isAvailable: true, isSoldOut: true, orderedToday: 55, isVegetarian: true, course: 'Dessert' },
   ]);
 
   const toggleAvailability = (id: string) => {
