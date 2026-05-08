@@ -31,5 +31,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingVertical: SPACING.md,
+    backgroundColor:COLORS.white
   },
 });

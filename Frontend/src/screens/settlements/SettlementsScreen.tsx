@@ -1,11 +1,11 @@
 import React from 'react';
-import { 
-  StyleSheet, 
-  Text, 
-  View, 
-  FlatList, 
-  TouchableOpacity, 
-  SafeAreaView 
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  TouchableOpacity,
+  SafeAreaView
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { COLORS } from '../../constants/colors';
@@ -53,7 +53,7 @@ const SettlementsScreen = () => {
       {/* Main Summary Card */}
       <View style={styles.summaryCard}>
         <Text style={styles.summaryTitle}>Current Period Payout</Text>
-        
+
         <View style={styles.financialRow}>
           <Text style={styles.finLabel}>Gross Sales</Text>
           <Text style={styles.finValue}>₹{currentPayout.gross.toLocaleString()}</Text>
@@ -106,7 +106,7 @@ const SettlementsScreen = () => {
   );
 
   const getStatusStyle = (status: string) => {
-    switch(status) {
+    switch (status) {
       case 'PAID': return { color: '#10B981', bg: '#D1FAE5' };
       case 'FAILED': return { color: '#EF4444', bg: '#FEE2E2' };
       default: return { color: '#F59E0B', bg: '#FEF3C7' };

@@ -184,6 +184,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 2,
+    right:-7,
   },
   vegIndicatorDot: {
     width: 6,
