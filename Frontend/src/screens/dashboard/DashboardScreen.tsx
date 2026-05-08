@@ -1,5 +1,5 @@
-import React from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { Pressable, ScrollView, StyleSheet, Text, View, TouchableOpacity, Switch, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AppStackParamList } from '../../navigation/AppNavigator';
@@ -12,7 +12,7 @@ import ActivityItem from '../../components/dashboard/ActivityItem';
 
 const DashboardScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<AppStackParamList>>();
-  const isOffline = false;
+  const [isOffline, setIsOffline] = useState(false);
   const hasOrders = true;
   const showSlaAlert = true;
 
@@ -29,6 +29,18 @@ const DashboardScreen = () => {
         <View>
           <Text style={styles.vendorName}>FreshBowl Kitchen</Text>
           <Text style={styles.vendorMeta}>Counter 2 · {new Date().toDateString()}</Text>
+        </View>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 2 }}>
+          <Text style={{ fontSize: 12, fontWeight: '700', color: isOffline ? COLORS.textSecondary : '#10B981' }}>
+            {isOffline ? 'Offline' : 'Online'}
+          </Text>
+          <Switch
+            value={!isOffline}
+            onValueChange={(val) => setIsOffline(!val)}
+            trackColor={{ false: '#CBD5E1', true: '#10B981' }}
+            thumbColor={Platform.OS === 'ios' ? undefined : COLORS.white}
+            style={{ transform: [{ scaleX: 0.65 }, { scaleY: 0.65 }] }}
+          />
         </View>
       </View>
 
@@ -198,5 +210,38 @@ const styles = StyleSheet.create({
     fontSize: TYPOGRAPHY.sm,
     color: COLORS.textSecondary,
     fontWeight: FONT_WEIGHT.medium,
+  },
+  toggleBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 20,
+    borderWidth: 1,
+    gap: 6,
+  },
+  onlineBtn: {
+    backgroundColor: '#F0FDF4',
+    borderColor: '#DCFCE7',
+  },
+  offlineBtn: {
+    backgroundColor: '#FEF2F2',
+    borderColor: '#FEE2E2',
+  },
+  toggleDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+  },
+  onlineDot: {
+    backgroundColor: COLORS.success,
+  },
+  offlineDot: {
+    backgroundColor: COLORS.error,
+  },
+  toggleText: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: COLORS.textPrimary,
   },
 });

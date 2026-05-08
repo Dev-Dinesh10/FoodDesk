@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   StyleSheet,
   Text,
@@ -38,6 +38,7 @@ const INITIAL_ORDERS: Order[] = [
 const LiveOrdersScreen = () => {
   const [orders, setOrders] = useState<Order[]>(INITIAL_ORDERS);
   const [activeTab, setActiveTab] = useState<OrderStatus>('INCOMING');
+  const scrollRef = useRef<ScrollView>(null);
 
   const updateStatus = (id: string, newStatus: OrderStatus | 'COLLECTED') => {
     if (newStatus === 'COLLECTED') {
@@ -57,8 +58,6 @@ const LiveOrdersScreen = () => {
     READY: orders.filter(o => o.status === 'READY').length,
   };
 
-  const filteredOrders = orders.filter(o => o.status === activeTab);
-
   const TABS = [
     { key: 'INCOMING' as OrderStatus, label: 'Incoming', color: '#0077B6' },
     { key: 'PREPARING' as OrderStatus, label: 'Preparing', color: '#F59E0B' },
@@ -67,17 +66,6 @@ const LiveOrdersScreen = () => {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <View>
-          <Text style={styles.title}>Live Orders</Text>
-          <Text style={styles.subtitle}>Kitchen Queue • {orders.length} Active</Text>
-        </View>
-        <TouchableOpacity style={styles.modeToggle}>
-          <MaterialIcons name="notifications-none" size={24} color={COLORS.primary} />
-        </TouchableOpacity>
-      </View>
-
       {/* Filter Chips (Pill Shaped - Matching Menu Design) */}
       <View style={styles.filterBar}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filterScroll}>
@@ -88,7 +76,11 @@ const LiveOrdersScreen = () => {
                 styles.filterChip, 
                 activeTab === tab.key && styles.activeFilterChip
               ]}
-              onPress={() => setActiveTab(tab.key)}
+              onPress={() => {
+                setActiveTab(tab.key);
+                const index = TABS.findIndex(t => t.key === tab.key);
+                scrollRef.current?.scrollTo({ x: index * width, animated: true });
+              }}
             >
               <Text style={[
                 styles.filterText, 
@@ -121,32 +113,47 @@ const LiveOrdersScreen = () => {
         </ScrollView>
       </View>
 
-      {/* Active List */}
-      <FlatList
-        data={filteredOrders}
-        keyExtractor={item => item.id}
-        contentContainerStyle={styles.listContent}
-        showsVerticalScrollIndicator={false}
-        renderItem={({ item }) => (
-          <LiveOrderCard
-            token={item.token}
-            employeeName={item.employeeName}
-            items={item.items}
-            slotTime={item.slotTime}
-            status={item.status}
-            slaProgress={item.slaProgress}
-            onAccept={() => updateStatus(item.id, 'PREPARING')}
-            onMarkReady={() => updateStatus(item.id, 'READY')}
-            onReject={() => setOrders(prev => prev.filter(o => o.id !== item.id))}
-          />
-        )}
-        ListEmptyComponent={
-          <View style={styles.emptyState}>
-            <MaterialIcons name="done-all" size={64} color="#E2E8F0" />
-            <Text style={styles.emptyText}>No {activeTab.toLowerCase()} orders at the moment</Text>
+      {/* Active List (Swipeable) */}
+      <ScrollView
+        ref={scrollRef}
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        onMomentumScrollEnd={(e) => {
+          const page = Math.round(e.nativeEvent.contentOffset.x / width);
+          setActiveTab(TABS[page].key);
+        }}
+      >
+        {TABS.map(tab => (
+          <View style={{ width: width }} key={tab.key}>
+            <FlatList
+              data={orders.filter(o => o.status === tab.key)}
+              keyExtractor={item => item.id}
+              contentContainerStyle={styles.listContent}
+              showsVerticalScrollIndicator={false}
+              renderItem={({ item }) => (
+                <LiveOrderCard
+                  token={item.token}
+                  employeeName={item.employeeName}
+                  items={item.items}
+                  slotTime={item.slotTime}
+                  status={item.status}
+                  slaProgress={item.slaProgress}
+                  onAccept={() => updateStatus(item.id, 'PREPARING')}
+                  onMarkReady={() => updateStatus(item.id, 'READY')}
+                  onReject={() => setOrders(prev => prev.filter(o => o.id !== item.id))}
+                />
+              )}
+              ListEmptyComponent={
+                <View style={styles.emptyState}>
+                  <MaterialIcons name="done-all" size={64} color="#E2E8F0" />
+                  <Text style={styles.emptyText}>No {tab.label.toLowerCase()} orders at the moment</Text>
+                </View>
+              }
+            />
           </View>
-        }
-      />
+        ))}
+      </ScrollView>
     </View>
   );
 };
@@ -155,29 +162,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F8FAFC',
-  },
-  header: {
-    padding: SPACING.lg,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: COLORS.white,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.border,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: FONT_WEIGHT.bold,
-    color: COLORS.textPrimary,
-  },
-  subtitle: {
-    fontSize: 12,
-    color: COLORS.textSecondary,
-  },
-  modeToggle: {
-    padding: 8,
-    borderRadius: 8,
-    backgroundColor: '#FFF5ED',
   },
   filterBar: {
     backgroundColor: COLORS.white,

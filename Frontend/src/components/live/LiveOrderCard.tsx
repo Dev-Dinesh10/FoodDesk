@@ -35,9 +35,10 @@ const LiveOrderCard: React.FC<LiveOrderCardProps> = ({
   onMarkReady,
 }) => {
   const getSlaColor = () => {
-    if (slaProgress < 0.75) return COLORS.success;
-    if (slaProgress < 1.0) return COLORS.warning;
-    return COLORS.error;
+    if (status === 'INCOMING') return COLORS.primary;
+    if (status === 'PREPARING') return COLORS.warning;
+    if (status === 'READY') return COLORS.success;
+    return COLORS.primary;
   };
 
   const isBreached = slaProgress >= 1.0;
@@ -70,7 +71,7 @@ const LiveOrderCard: React.FC<LiveOrderCardProps> = ({
       {/* SLA Progress Bar */}
       <View style={styles.slaContainer}>
         <Text style={[styles.slaLabel, { color: getSlaColor() }]}>
-          {isBreached ? 'SLA BREACHED' : `${Math.round(slaProgress * 100)}% Time`}
+          {isBreached ? 'SLA BREACHED' : `${Math.round(slaProgress * 100)} min`}
         </Text>
         <View style={styles.slaBackground}>
           <View style={[

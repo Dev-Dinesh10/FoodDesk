@@ -9,14 +9,12 @@ interface HeaderProps {
   title: string;
   onMenuPress: () => void;
   onLogout?: () => void;
-  isOnline?: boolean;
 }
 
 const Header: React.FC<HeaderProps> = ({ 
   title, 
   onMenuPress, 
-  onLogout, 
-  isOnline = true 
+  onLogout 
 }) => {
   return (
     <View style={styles.container}>
@@ -28,11 +26,6 @@ const Header: React.FC<HeaderProps> = ({
       </View>
 
       <View style={styles.rightSection}>
-        <View style={styles.statusBadge}>
-          <View style={[styles.statusDot, isOnline ? styles.onlineDot : styles.offlineDot]} />
-          <Text style={styles.statusText}>{isOnline ? 'Online' : 'Offline'}</Text>
-        </View>
-        
         {onLogout && (
           <TouchableOpacity onPress={onLogout} style={styles.logoutButton}>
             <MaterialIcons name="logout" size={20} color={COLORS.error} />
@@ -77,33 +70,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 12,
   },
-  statusBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#F0FDF4',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 8,
-    gap: 6,
-    borderWidth: 1,
-    borderColor: '#DCFCE7',
-  },
-  statusDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-  },
-  onlineDot: {
-    backgroundColor: COLORS.success,
-  },
-  offlineDot: {
-    backgroundColor: COLORS.error,
-  },
-  statusText: {
-    fontSize: 11,
-    fontWeight: 'bold',
-    color: COLORS.success,
-  },
+
   logoutButton: {
     width: 40,
     height: 40,

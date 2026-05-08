@@ -10,6 +10,7 @@ import DailyReportScreen from '../screens/reports/DailyReportScreen';
 import SettlementsScreen from '../screens/settlements/SettlementsScreen';
 import CounterDisplayScreen from '../screens/counter/CounterDisplayScreen';
 import SettingsScreen from '../screens/settings/SettingsScreen';
+import SlotsScreen from '../screens/slots/SlotsScreen';
 
 export type AppStackParamList = {
   Dashboard: undefined;
@@ -21,6 +22,7 @@ export type AppStackParamList = {
   Settlements: undefined;
   CounterDisplay: undefined;
   Settings: undefined;
+  Slots: undefined;
 };
 
 const Stack = createNativeStackNavigator<AppStackParamList>();
@@ -37,6 +39,7 @@ const sideTabRouteMap: Record<string, keyof AppStackParamList | 'logout'> = {
   'daily-reports': 'DailyReports',
   settlements: 'Settlements',
   'counter-display': 'CounterDisplay',
+  slots: 'Slots',
   settings: 'Settings',
   logout: 'logout',
 };
@@ -91,6 +94,7 @@ export default function AppNavigator({ onLogout }: AppNavigatorProps) {
   const SettlementsWithLayout = withAppLayout('settlements', 'Settlements & Payouts', SettlementsScreen, onLogout);
   const CounterDisplayWithLayout = withAppLayout('counter-display', 'Counter Display Mode', CounterDisplayScreen, onLogout);
   const SettingsWithLayout = withAppLayout('settings', 'Settings', SettingsScreen, onLogout);
+  const SlotsWithLayout = withAppLayout('slots', 'Slots', SlotsScreen, onLogout);
 
   return (
     <Stack.Navigator initialRouteName="Dashboard" screenOptions={{ headerShown: false }}>
@@ -103,6 +107,7 @@ export default function AppNavigator({ onLogout }: AppNavigatorProps) {
       <Stack.Screen name="Settlements" component={SettlementsWithLayout} />
       <Stack.Screen name="CounterDisplay" component={CounterDisplayWithLayout} />
       <Stack.Screen name="Settings" component={SettingsWithLayout} />
+      <Stack.Screen name="Slots" component={SlotsWithLayout} />
     </Stack.Navigator>
   );
 }

@@ -22,6 +22,7 @@ const defaultSideTabs: SideTabItem[] = [
   { key: 'daily-reports', label: 'Daily Reports', icon: 'bar-chart' },
   { key: 'settlements', label: 'Settlements & Payouts', icon: 'account-balance-wallet' },
   { key: 'counter-display', label: 'Counter Display', icon: 'tv' },
+  { key: 'slots', label: 'Slots', icon: 'access-time' },
   { key: 'settings', label: 'Settings', icon: 'settings' },
   { key: 'logout', label: 'Logout', icon: 'logout' },
 ];
@@ -57,7 +58,6 @@ const Layout: React.FC<LayoutProps> = ({
           title={title} 
           onMenuPress={() => setIsSideTabOpen(true)} 
           onLogout={onLogout}
-          isOnline={isOnline}
         />
       </View>
 
