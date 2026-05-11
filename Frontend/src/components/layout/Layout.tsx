@@ -22,9 +22,11 @@ interface LayoutProps {
 }
 
 const defaultSideTabs: SideTabItem[] = [
-  { key: 'daily-reports', label: 'Daily Reports', icon: 'bar-chart' },
-  { key: 'settlements', label: 'Settlements & Payouts', icon: 'account-balance-wallet' },
+  { key: 'kot-batches', label: 'KOT Batches', icon: 'layers' },
   { key: 'counter-display', label: 'Counter Display', icon: 'tv' },
+  { key: 'daily-reports', label: 'Daily Reports', icon: 'bar-chart' },
+  { key: 'monthly-activity', label: 'Monthly Activity', icon: 'calendar-today' },
+  { key: 'settlements', label: 'Settlements & Payouts', icon: 'account-balance-wallet' },
   { key: 'slots', label: 'Slots', icon: 'access-time' },
   { key: 'settings', label: 'Settings', icon: 'settings' },
   { key: 'logout', label: 'Logout', icon: 'logout' },

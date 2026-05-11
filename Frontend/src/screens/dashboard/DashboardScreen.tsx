@@ -26,100 +26,109 @@ const DashboardScreen = () => {
 
   return (
     <Layout title="Dashboard" activeBottomTabKey="dashboard">
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <View style={styles.topInfoBar}>
-        <View>
-          <Text style={styles.vendorName}>FreshBowl Kitchen</Text>
-          <Text style={styles.vendorMeta}>Counter 2 · {new Date().toDateString()}</Text>
+      <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+        <View style={styles.topInfoBar}>
+          <View>
+            <Text style={styles.vendorName}>FreshBowl Kitchen</Text>
+            <Text style={styles.vendorMeta}>Counter 2 · {new Date().toDateString()}</Text>
+          </View>
+          {/* 
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 2 }}>
+            <Text style={{ fontSize: 12, fontWeight: '700', color: isOffline ? COLORS.textSecondary : '#10B981' }}>
+              {isOffline ? 'Offline' : 'Online'}
+            </Text>
+            <Switch
+              value={!isOffline}
+              onValueChange={(val) => setIsOffline(!val)}
+              trackColor={{ false: '#CBD5E1', true: '#10B981' }}
+              thumbColor={Platform.OS === 'ios' ? undefined : COLORS.white}
+              style={{ transform: [{ scaleX: 0.65 }, { scaleY: 0.65 }] }}
+            />
+          </View>
+          */}
         </View>
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 2 }}>
-          <Text style={{ fontSize: 12, fontWeight: '700', color: isOffline ? COLORS.textSecondary : '#10B981' }}>
-            {isOffline ? 'Offline' : 'Online'}
-          </Text>
-          <Switch
-            value={!isOffline}
-            onValueChange={(val) => setIsOffline(!val)}
-            trackColor={{ false: '#CBD5E1', true: '#10B981' }}
-            thumbColor={Platform.OS === 'ios' ? undefined : COLORS.white}
-            style={{ transform: [{ scaleX: 0.65 }, { scaleY: 0.65 }] }}
+
+        {isOffline ? (
+          <View style={styles.offlineBanner}>
+            <Text style={styles.offlineBannerText}>Working offline - showing cached data</Text>
+          </View>
+        ) : null}
+
+        {showSlaAlert ? (
+          <View style={styles.slaBanner}>
+            <Text style={styles.slaBannerText}>
+              SLA alert: Order #A-047 prep time exceeded by 4 min
+            </Text>
+          </View>
+        ) : null}
+
+        <View style={styles.statsGrid}>
+
+          <MetricCard
+            label="Today's Revenue"
+            value="₹67,800"
+            iconName="payments"
+            iconColor={COLORS.success}
+          />
+          <MetricCard
+            label="Today's Pre-Orders"
+            value="452 confirmed"
+            iconName="assignment"
+          />
+          <MetricCard
+            label="Live Orders Pending"
+            value="12 in queue"
+            iconName="timer"
+          />
+          <MetricCard
+            label="Sold Out Items"
+            value="2 flagged"
+            iconName="block"
+            iconColor={COLORS.error}
           />
         </View>
-      </View>
 
-      {isOffline ? (
-        <View style={styles.offlineBanner}>
-          <Text style={styles.offlineBannerText}>Working offline - showing cached data</Text>
+        <Text style={styles.sectionTitle}>Quick Actions</Text>
+        <View style={styles.quickActionsRow}>
+          <QuickActionButton
+            label="KOT Batches"
+            onPress={() => navigation.navigate('KOTBatches')}
+          />
+          <QuickActionButton
+            label="Counter"
+            onPress={() => navigation.navigate('CounterDisplay')}
+          />
+          <QuickActionButton
+            label="Daily Report"
+            onPress={() => navigation.navigate('DailyReports')}
+          />
+          <QuickActionButton
+            label="Monthly Activity"
+            onPress={() => navigation.navigate('MonthlyActivity')}
+          />
+          <QuickActionButton
+            label="Slots"
+            onPress={() => navigation.navigate('Slots')}
+          />
         </View>
-      ) : null}
 
-      {showSlaAlert ? (
-        <View style={styles.slaBanner}>
-          <Text style={styles.slaBannerText}>
-            SLA alert: Order #A-047 prep time exceeded by 4 min
-          </Text>
+        <Text style={styles.sectionTitle}>Recent Activity</Text>
+        <View style={styles.activityCard}>
+          {hasOrders ? (
+            recentActivities.map((activity, index) => (
+              <ActivityItem
+                key={`${activity.action}-${index}`}
+                action={activity.action}
+                timestamp={activity.timestamp}
+              />
+            ))
+          ) : (
+            <Text style={styles.emptyText}>
+              No pre-orders for today. Live kitchen opens at 11:30 AM.
+            </Text>
+          )}
         </View>
-      ) : null}
-
-      <View style={styles.statsGrid}>
-        <MetricCard
-          label="Today's Pre-Orders"
-          value="452 confirmed"
-          iconName="assignment"
-        />
-        <MetricCard
-          label="Live Orders Pending"
-          value="12 in queue"
-          iconName="timer"
-        />
-        <MetricCard
-          label="Sold Out Items"
-          value="2 flagged"
-          iconName="block"
-          iconColor={COLORS.error}
-        />
-        <MetricCard
-          label="Today's Revenue"
-          value="₹67,800"
-          iconName="payments"
-          iconColor={COLORS.success}
-        />
-      </View>
-
-      <Text style={styles.sectionTitle}>Quick Actions</Text>
-      <View style={styles.quickActionsRow}>
-        <QuickActionButton
-          label="Slots"
-          onPress={() => navigation.navigate('Slots')}
-        />
-        <View style={styles.actionGap} />
-        <QuickActionButton
-          label="Daily Report"
-          onPress={() => navigation.navigate('DailyReports')}
-        />
-        <View style={styles.actionGap} />
-        <QuickActionButton
-          label="Counter"
-          onPress={() => navigation.navigate('CounterDisplay')}
-        />
-      </View>
-
-      <Text style={styles.sectionTitle}>Recent Activity</Text>
-      <View style={styles.activityCard}>
-        {hasOrders ? (
-          recentActivities.map((activity, index) => (
-            <ActivityItem
-              key={`${activity.action}-${index}`}
-              action={activity.action}
-              timestamp={activity.timestamp}
-            />
-          ))
-        ) : (
-          <Text style={styles.emptyText}>
-            No pre-orders for today. Live kitchen opens at 11:30 AM.
-          </Text>
-        )}
-      </View>
-    </ScrollView>
+      </ScrollView>
     </Layout>
   );
 };
@@ -196,6 +205,7 @@ const styles = StyleSheet.create({
   quickActionsRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    gap: 8,
     marginBottom: SPACING.sm,
   },
   actionGap: {

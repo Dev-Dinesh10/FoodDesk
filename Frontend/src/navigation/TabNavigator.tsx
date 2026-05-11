@@ -12,6 +12,8 @@ export const bottomTabRouteMap: Record<string, keyof AppStackParamList> = {
 };
 
 export const sideTabRouteMap: Record<string, keyof AppStackParamList | 'logout'> = {
+  'monthly-activity': 'MonthlyActivity',
+  'kot-batches': 'KOTBatches',
   'daily-reports': 'DailyReports',
   settlements: 'Settlements',
   'counter-display': 'CounterDisplay',

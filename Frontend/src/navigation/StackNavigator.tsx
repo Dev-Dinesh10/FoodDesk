@@ -10,6 +10,8 @@ import SettlementsScreen from '../screens/settlements/SettlementsScreen';
 import CounterDisplayScreen from '../screens/counter/CounterDisplayScreen';
 import SettingsScreen from '../screens/settings/SettingsScreen';
 import SlotsScreen from '../screens/slots/SlotsScreen';
+import MonthlyActivityScreen from '../screens/monthly/MonthlyActivityScreen';
+import KOTBatchesScreen from '../screens/kot/KOTBatchesScreen';
 
 export type AppStackParamList = {
   Dashboard: undefined;
@@ -22,6 +24,8 @@ export type AppStackParamList = {
   CounterDisplay: undefined;
   Settings: undefined;
   Slots: undefined;
+  MonthlyActivity: undefined;
+  KOTBatches: undefined;
 };
 
 const Stack = createNativeStackNavigator<AppStackParamList>();
@@ -39,6 +43,8 @@ export default function StackNavigator() {
       <Stack.Screen name="CounterDisplay" component={CounterDisplayScreen} />
       <Stack.Screen name="Settings" component={SettingsScreen} />
       <Stack.Screen name="Slots" component={SlotsScreen} />
+      <Stack.Screen name="MonthlyActivity" component={MonthlyActivityScreen} />
+      <Stack.Screen name="KOTBatches" component={KOTBatchesScreen} />
     </Stack.Navigator>
   );
 }
