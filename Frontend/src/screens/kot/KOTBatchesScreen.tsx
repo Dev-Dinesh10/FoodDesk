@@ -83,8 +83,8 @@ const KOTBatchesScreen = () => {
             <Text style={styles.subtitle}>Manage and track grouped kitchen order batches efficiently.</Text>
           </View>
           <View style={styles.headerActions}>
-            <Pressable style={styles.actionBtn}>
-              <Text style={styles.actionBtnText}>Export</Text>
+            <Pressable style={styles.exportBtn}>
+              <Text style={styles.exportBtnText}>Export</Text>
             </Pressable>
             <Pressable style={styles.createBtn} onPress={() => setCreateVisible(true)}>
               <Text style={styles.createBtnText}>Create Batches</Text>
@@ -422,6 +422,21 @@ const styles = StyleSheet.create({
   actionBtnText: {
     fontSize: 12,
     fontWeight: FONT_WEIGHT.bold,
+  },
+  exportBtn: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    backgroundColor: COLORS.surface,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  exportBtnText: {
+    fontSize: 13,
+    fontWeight: FONT_WEIGHT.bold,
+    color: COLORS.textPrimary,
   },
 });
 

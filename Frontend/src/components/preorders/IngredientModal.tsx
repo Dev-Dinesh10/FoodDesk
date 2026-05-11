@@ -92,7 +92,7 @@ const IngredientModal: React.FC<IngredientModalProps> = ({ visible, onClose, dat
               <Text style={styles.closeButtonText}>Close</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.downloadButton}>
-              <MaterialIcons name="description" size={18} color={COLORS.white} />
+              <MaterialIcons name="file-download" size={18} color={COLORS.white} />
               <Text style={styles.downloadButtonText}>Download</Text>
             </TouchableOpacity>
           </View>
