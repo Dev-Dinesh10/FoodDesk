@@ -76,7 +76,7 @@ const DashboardScreen = () => {
             iconName="assignment"
           />
           <MetricCard
-            label="Live Orders Pending"
+            label="Live Orders"
             value="12 in queue"
             iconName="timer"
           />

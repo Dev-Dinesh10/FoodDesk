@@ -22,6 +22,7 @@ interface LayoutProps {
 }
 
 const defaultSideTabs: SideTabItem[] = [
+  { key: 'profile', label: 'Profile', icon: 'person' },
   { key: 'kot-batches', label: 'KOT Batches', icon: 'layers' },
   { key: 'counter-display', label: 'Counter Display', icon: 'tv' },
   { key: 'daily-reports', label: 'Daily Reports', icon: 'bar-chart' },

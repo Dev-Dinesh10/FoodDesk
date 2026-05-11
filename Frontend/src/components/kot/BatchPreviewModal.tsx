@@ -148,7 +148,7 @@ export const BatchPreviewModal: React.FC<BatchPreviewModalProps> = ({ visible, o
           {/* Footer */}
           <View style={styles.footer}>
             <Pressable style={styles.printBtn}>
-              <MaterialIcons name="print" size={16} color={COLORS.textPrimary} />
+              <MaterialIcons name="print" size={16} color={COLORS.white} />
               <Text style={styles.printBtnText}>Print KOT</Text>
             </Pressable>
             <Pressable style={styles.advanceBtn} onPress={handleAdvance}>
@@ -305,7 +305,7 @@ const styles = StyleSheet.create({
   },
   printBtnText: {
     fontSize: 13,
-    color: COLORS.textPrimary,
+    color: '#FFFFFF',
     fontWeight: FONT_WEIGHT.bold,
   },
   advanceBtn: {

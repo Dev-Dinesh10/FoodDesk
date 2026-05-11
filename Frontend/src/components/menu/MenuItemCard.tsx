@@ -113,8 +113,8 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
           </TouchableOpacity>
 
           {!isSoldOut && (
-            <TouchableOpacity onPress={onMarkSoldOut} style={{ width: 40, height: 30 }}>
-              <Image source={require('../../../assets/sold-out.png')} style={styles.soldOutImageButton} resizeMode="contain" />
+            <TouchableOpacity onPress={onMarkSoldOut} style={styles.soldOutBtnInline}>
+              <Text style={styles.soldOutBtnText}>SOLD OUT</Text>
             </TouchableOpacity>
           )}
         </View>

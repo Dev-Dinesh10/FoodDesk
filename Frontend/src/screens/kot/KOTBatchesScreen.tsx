@@ -74,7 +74,7 @@ const KOTBatchesScreen = () => {
   };
 
   return (
-    <Layout title="KOT Batches">
+    <Layout title="KOT Batches" activeBottomTabKey="">
       <ScrollView style={styles.container} contentContainerStyle={styles.content}>
         {/* Header Section */}
         <View style={styles.header}>
@@ -83,21 +83,21 @@ const KOTBatchesScreen = () => {
             <Text style={styles.subtitle}>Manage and track grouped kitchen order batches efficiently.</Text>
           </View>
           <View style={styles.headerActions}>
-            <Pressable style={styles.iconBtn}><MaterialIcons name="refresh" size={18} color={COLORS.textPrimary} /></Pressable>
-            <Pressable style={styles.iconBtn}><MaterialIcons name="file-download" size={18} color={COLORS.textPrimary} /></Pressable>
+            <Pressable style={styles.actionBtn}>
+              <Text style={styles.actionBtnText}>Export</Text>
+            </Pressable>
             <Pressable style={styles.createBtn} onPress={() => setCreateVisible(true)}>
-              <MaterialIcons name="add" size={14} color={COLORS.white} />
-              <Text style={styles.createBtnText}>Create Batch</Text>
+              <Text style={styles.createBtnText}>Create Batches</Text>
             </Pressable>
           </View>
         </View>
 
         {/* Stats Section Grid */}
         <View style={styles.statsGrid}>
-          <MetricCard label="Total Batches" value="5" iconName="layers" iconColor={COLORS.primary} />
-          <MetricCard label="Active" value="2" iconName="local-fire-department" iconColor="#F59E0B" />
-          <MetricCard label="Completed" value="2" iconName="check-circle" iconColor="#10B981" />
-          <MetricCard label="Delayed" value="1" iconName="warning" iconColor="#EF4444" />
+          <MetricCard label="Total Batches" value="5" iconName="layers" iconColor={COLORS.primary} subtitle="All batches" />
+          <MetricCard label="Active" value="2" iconName="local-fire-department" iconColor="#F59E0B" subtitle="In progress" />
+          <MetricCard label="Completed" value="2" iconName="check-circle" iconColor="#10B981" subtitle="Delivered" />
+          <MetricCard label="Delayed" value="1" iconName="warning" iconColor="#EF4444" subtitle="Action needed" />
         </View>
 
         {/* Search and Filters */}
@@ -130,8 +130,8 @@ const KOTBatchesScreen = () => {
         {/* List Section */}
         <View style={styles.listContainer}>
           {batches.map(batch => (
-            <Pressable 
-              key={batch.id} 
+            <Pressable
+              key={batch.id}
               style={styles.batchCard}
               onPress={() => {
                 setSelectedBatch(batch);
@@ -151,7 +151,7 @@ const KOTBatchesScreen = () => {
                   <Text style={[styles.statusBadgeText, { color: getStatusColor(batch.status) }]}>{batch.status}</Text>
                 </View>
               </View>
-              
+
               <View style={styles.batchDetails}>
                 <View style={styles.detailItem}>
                   <MaterialIcons name="storefront" size={14} color={COLORS.textSecondary} />
@@ -168,9 +168,9 @@ const KOTBatchesScreen = () => {
                   <Text style={styles.detailText}>{batch.time} · {batch.duration}</Text>
                 </View>
 
-                <Pressable 
+                <Pressable
                   style={[
-                    styles.actionBtn, 
+                    styles.actionBtn,
                     { backgroundColor: getActionColor(batch.status), borderColor: getActionColor(batch.status) === '#E2E8F0' ? '#CBD5E1' : getActionColor(batch.status) }
                   ]}
                   onPress={() => handleAction(batch.id)}

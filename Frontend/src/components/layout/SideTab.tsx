@@ -33,8 +33,8 @@ const SideTab: React.FC<SideTabProps> = ({ visible, items, activeKey, onItemPres
     <View style={styles.overlay}>
       <Pressable style={styles.backdrop} onPress={onClose} />
       <View style={[
-        styles.drawer, 
-        { 
+        styles.drawer,
+        {
           paddingTop: Math.max(insets.top, SPACING.lg),
           paddingBottom: Math.max(insets.bottom, SPACING.lg)
         }
@@ -70,10 +70,10 @@ const SideTab: React.FC<SideTabProps> = ({ visible, items, activeKey, onItemPres
                   onClose();
                 }}
               >
-                <MaterialIcons 
-                  name={item.icon} 
-                  size={22} 
-                  color={isActive ? COLORS.primary : COLORS.textSecondary} 
+                <MaterialIcons
+                  name={item.icon}
+                  size={22}
+                  color={isActive ? COLORS.primary : COLORS.textSecondary}
                 />
                 <Text style={[styles.itemText, isActive && styles.activeItemText]}>
                   {item.label}

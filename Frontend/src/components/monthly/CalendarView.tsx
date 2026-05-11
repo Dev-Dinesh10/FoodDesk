@@ -10,19 +10,24 @@ const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 interface CalendarViewProps {
   grid: (DayData | null)[][];
   onDayPress: (d: DayData) => void;
+  selectedFilter?: string;
 }
 
 const DayCell = ({
   item,
   onPress,
+  selectedFilter,
 }: {
   item: DayData | null;
   onPress?: (d: DayData) => void;
+  selectedFilter?: string;
 }) => {
   if (!item) {
     return <View style={[styles.cell, { backgroundColor: 'transparent' }]} />;
   }
   const cfg = STATUS_CONFIG[item.status];
+  const isDimmed = selectedFilter && selectedFilter !== 'All statuses' && item.status.toLowerCase() !== selectedFilter.toLowerCase();
+  
   return (
     <Pressable
       onPress={() => onPress?.(item)}
@@ -30,6 +35,7 @@ const DayCell = ({
         styles.cell,
         { backgroundColor: cfg.bg },
         pressed && { opacity: 0.75 },
+        isDimmed && { opacity: 0.15 },
       ]}
     >
       <View style={styles.cellTop}>
@@ -52,7 +58,7 @@ const DayCell = ({
   );
 };
 
-export const CalendarView: React.FC<CalendarViewProps> = ({ grid, onDayPress }) => {
+export const CalendarView: React.FC<CalendarViewProps> = ({ grid, onDayPress, selectedFilter }) => {
   return (
     <View style={styles.wrapper}>
       {/* Day-of-week header */}
@@ -67,7 +73,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({ grid, onDayPress }) 
       {grid.map((row, ri) => (
         <View key={ri} style={styles.row}>
           {row.map((item, ci) => (
-            <DayCell key={ci} item={item} onPress={onDayPress} />
+            <DayCell key={ci} item={item} onPress={onDayPress} selectedFilter={selectedFilter} />
           ))}
         </View>
       ))}

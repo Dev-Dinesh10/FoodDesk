@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView, Text, TouchableOpacity, Alert } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import { COLORS } from '../../constants/colors';
 import { SPACING } from '../../constants/spacing';
 import { TYPOGRAPHY, FONT_WEIGHT } from '../../constants/typography';
@@ -12,6 +13,7 @@ import Layout from '../../components/layout/Layout';
 import IngredientModal from '../../components/preorders/IngredientModal';
 
 const PreOrdersScreen = () => {
+  const navigation = useNavigation<any>();
   const [items, setItems] = useState([
     { id: '1', name: 'Dal Rice', totalQty: 142, slots: [89, 34, 12, 7], gmv: '11,360', isUnavailable: false },
     { id: '2', name: 'Chicken Biryani', totalQty: 87, slots: [22, 41, 18, 6], gmv: '15,660', isUnavailable: false },
@@ -176,7 +178,7 @@ const PreOrdersScreen = () => {
           <View style={styles.actionGap} />
           <QuickActionButton 
             label="KOT Batches" 
-            onPress={() => Alert.alert('Printing...', 'Creating kitchen order ticket batches.')} 
+            onPress={() => navigation.navigate('KOTBatches')} 
           />
         </View>
         {!isConfirmed && (

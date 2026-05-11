@@ -42,7 +42,7 @@ export const ListView: React.FC<ListViewProps> = ({ days, onEdit }) => (
           <View style={styles.detailsGrid}>
             <View style={styles.detailItem}>
               <Text style={styles.detailLabel}>Hours</Text>
-              <Text style={styles.detailValue}>{d.hours !== undefined ? `${d.hours}h` : '-'}</Text>
+              <Text style={styles.detailValue}>{d.hours !== undefined ? `${d.hours}Hrs` : '-'}</Text>
             </View>
             
             <View style={[styles.detailItem, { alignItems: 'flex-end' }]}>

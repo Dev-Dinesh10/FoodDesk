@@ -18,6 +18,7 @@ export const sideTabRouteMap: Record<string, keyof AppStackParamList | 'logout'>
   settlements: 'Settlements',
   'counter-display': 'CounterDisplay',
   slots: 'Slots',
+  profile: 'Profile',
   settings: 'Settings',
   logout: 'logout',
 };

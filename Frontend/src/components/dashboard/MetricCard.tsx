@@ -10,9 +10,10 @@ interface MetricCardProps {
   value: string;
   iconName: keyof typeof MaterialIcons.glyphMap;
   iconColor?: string;
+  subtitle?: string;
 }
 
-const MetricCard: React.FC<MetricCardProps> = ({ label, value, iconName, iconColor }) => {
+const MetricCard: React.FC<MetricCardProps> = ({ label, value, iconName, iconColor, subtitle }) => {
   return (
     <View style={styles.card}>
       <View style={styles.header}>
@@ -26,6 +27,7 @@ const MetricCard: React.FC<MetricCardProps> = ({ label, value, iconName, iconCol
         <Text style={styles.label} numberOfLines={1}>{label}</Text>
       </View>
       <Text style={styles.value}>{value}</Text>
+      {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
     </View>
   );
 };
@@ -47,12 +49,12 @@ const styles = StyleSheet.create({
     elevation: 3,
     alignItems: 'center',
     justifyContent: 'center',
+    gap: 6,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: SPACING.sm,
   },
   iconContainer: {
     width: 32,
@@ -73,6 +75,11 @@ const styles = StyleSheet.create({
     fontSize: TYPOGRAPHY.lg,
     color: COLORS.textPrimary,
     fontWeight: FONT_WEIGHT.bold,
+    textAlign: 'center',
+  },
+  subtitle: {
+    fontSize: 10,
+    color: COLORS.textSecondary,
     textAlign: 'center',
   },
 });

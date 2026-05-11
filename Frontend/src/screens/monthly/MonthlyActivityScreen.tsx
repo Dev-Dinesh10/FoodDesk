@@ -141,7 +141,7 @@ const MonthlyActivityScreen = () => {
   ];
 
   return (
-    <Layout title="Monthly Activity">
+    <Layout title="Monthly Activity" activeBottomTabKey="">
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.content}
@@ -173,15 +173,15 @@ const MonthlyActivityScreen = () => {
           </Pressable>
         </View>
 
-       
+
 
         {/* Stat cards Grid (2->2->1) */}
         <View style={styles.cardsGrid}>
-          <MetricCard label="Active Days" value={String(activeDays)} iconName="check-circle" iconColor={COLORS.success} />
-          <MetricCard label="Service Hours" value={String(totalHours)} iconName="schedule" iconColor={COLORS.primary} />
-          <MetricCard label="Leave Days" value={String(leaveDays)} iconName="event-busy" iconColor={COLORS.warning} />
-          <MetricCard label="Holidays" value={String(holidayDays)} iconName="calendar-today" iconColor="#EF4444" />
-          <MetricCard label="Total Days" value={String(days.length)} iconName="trending-up" iconColor="#8B5CF6" />
+          <MetricCard label="Active Days" value={String(activeDays)} iconName="check-circle" iconColor={COLORS.success} subtitle="Days active" />
+          <MetricCard label="Service Hours" value={`${totalHours}Hrs`} iconName="schedule" iconColor={COLORS.primary} subtitle="Total logged" />
+          <MetricCard label="Leave Days" value={String(leaveDays)} iconName="event-busy" iconColor={COLORS.warning} subtitle="Planned leaves" />
+          <MetricCard label="Holidays" value={String(holidayDays)} iconName="calendar-today" iconColor="#EF4444" subtitle="Public holidays" />
+          <MetricCard label="Total Days" value={String(days.length)} iconName="trending-up" iconColor="#8B5CF6" subtitle="Calendar days" />
         </View>
 
         {/* Tabs */}
@@ -223,9 +223,14 @@ const MonthlyActivityScreen = () => {
 
         {/* Tab content */}
         {activeTab === 'calendar' && (
-          <CalendarView grid={grid} onDayPress={handleEditPress} />
+          <CalendarView grid={grid} onDayPress={handleEditPress} selectedFilter={selectedFilter} />
         )}
-        {activeTab === 'list' && <ListView days={days} onEdit={handleEditPress} />}
+        {activeTab === 'list' && (
+          <ListView
+            days={selectedFilter === 'All statuses' ? days : days.filter(d => d.status.toLowerCase() === selectedFilter.toLowerCase())}
+            onEdit={handleEditPress}
+          />
+        )}
         {activeTab === 'summary' && <SummaryView days={days} />}
       </ScrollView>
 
@@ -327,6 +332,7 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.md,
   },
   dropdownControl: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -335,9 +341,8 @@ const styles = StyleSheet.create({
     borderColor: COLORS.border,
     borderRadius: 8,
     paddingHorizontal: 10,
-    paddingVertical: 6,
+    height: 36,
     gap: 4,
-    minWidth: 70,
   },
   dropdownControlText: {
     fontSize: 12,
@@ -345,14 +350,16 @@ const styles = StyleSheet.create({
     fontWeight: FONT_WEIGHT.medium,
   },
   exportControlBtn: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: COLORS.surface,
     borderWidth: 1,
     borderColor: COLORS.border,
     borderRadius: 8,
     paddingHorizontal: 12,
-    paddingVertical: 6,
+    height: 36,
     gap: 4,
   },
   exportControlBtnText: {
@@ -361,10 +368,14 @@ const styles = StyleSheet.create({
     fontWeight: FONT_WEIGHT.semibold,
   },
   submitControlBtn: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: COLORS.primary,
     borderRadius: 8,
     paddingHorizontal: 12,
-    paddingVertical: 6,
+    height: 36,
   },
   submitControlBtnText: {
     fontSize: 12,

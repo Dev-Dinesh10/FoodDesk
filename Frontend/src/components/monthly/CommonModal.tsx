@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, View, Text, StyleSheet, Pressable, TextInput } from 'react-native';
+import { Modal, View, Text, StyleSheet, Pressable, TextInput, KeyboardAvoidingView } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { COLORS } from '../../constants/colors';
 import { SPACING } from '../../constants/spacing';
@@ -62,7 +62,11 @@ export const CommonModal: React.FC<CommonModalProps> = ({
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
       <View style={styles.overlay}>
-        <View style={styles.modalContent}>
+        <KeyboardAvoidingView
+          behavior="padding"
+          style={{ width: '100%' }}
+        >
+          <View style={styles.modalContent}>
           {/* Header */}
           <View style={styles.header}>
             <View style={{ flex: 1 }}>
@@ -176,7 +180,8 @@ export const CommonModal: React.FC<CommonModalProps> = ({
               <Text style={styles.saveText}>Save changes</Text>
             </Pressable>
           </View>
-        </View>
+          </View>
+        </KeyboardAvoidingView>
       </View>
     </Modal>
   );
@@ -292,10 +297,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 8,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    backgroundColor: COLORS.surface,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   cancelText: {
     fontSize: 14,
-    color: COLORS.textSecondary,
+    color: COLORS.textPrimary,
     fontWeight: FONT_WEIGHT.semibold,
   },
   saveBtn: {

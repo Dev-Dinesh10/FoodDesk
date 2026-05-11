@@ -47,11 +47,10 @@ export const SummaryView: React.FC<SummaryViewProps> = ({ days }) => {
             style={[
               styles.barFill,
               {
-                width: `${
-                  days.length > 0
+                width: `${days.length > 0
                     ? Math.round((counts.active / days.length) * 100)
                     : 0
-                }%`,
+                  }%`,
               },
             ]}
           />

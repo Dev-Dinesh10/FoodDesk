@@ -26,6 +26,9 @@ const Header: React.FC<HeaderProps> = ({
       </View>
 
       <View style={styles.rightSection}>
+        <TouchableOpacity style={styles.notificationButton}>
+          <MaterialIcons name="notifications-none" size={24} color={COLORS.textPrimary} />
+        </TouchableOpacity>
         {onLogout && (
           <TouchableOpacity onPress={onLogout} style={styles.logoutButton}>
             <MaterialIcons name="logout" size={20} color={COLORS.error} />
@@ -71,6 +74,13 @@ const styles = StyleSheet.create({
     gap: 12,
   },
 
+  notificationButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   logoutButton: {
     width: 40,
     height: 40,
